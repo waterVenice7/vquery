@@ -82,7 +82,7 @@ vQuery.methodSquare=(function(){
         var result=[];
         var aEle=oParent.getElementsByTagName('*');
         var sClass1='\\b'+sClass+'\\b';
-        for(var i=0;i<aEle.length;i++)
+        for(var i=0;i<aEle.length&&(aEle[i].className!='');i++)
         {
               if(aEle[i].className.search(sClass1)!=-1)
               {
@@ -117,14 +117,16 @@ vQuery.methodSquare=(function(){
     function startMove(obj, json, fn)
     {
         //change the frequency
-        if(!arguments[3])
-        {
-            var fre=30;
-        }
-        else
-        {
-            fre=arguments[3];
-        } 
+        // if(!arguments[3])
+        // {
+        //     var fre=30;
+        // }
+        // else
+        // {
+        //     fre=arguments[3];
+        // } 
+        //fre=(arguments[3]===undefined)?30:arguments[3];
+        fre=arguments[3]||30;
         //Avoid the cumulative timer cause acceleration problems
         clearInterval(obj.timer);
         //filter the json  
@@ -134,7 +136,7 @@ vQuery.methodSquare=(function(){
 
         }
         //for stop(prototype)
-        if(json==false)
+        if(json===false)
         {
             clearInterval(obj.timer);
         }
@@ -269,7 +271,7 @@ vQuery.mainSelector=(function(){
         for(var i=0;i<aPrimary.length;i++)
         {      
             aPrimary[i].verify=true;        
-            for(var j=iStart;j<aKeyArr.length;j++)
+            for(var j=iStart;j<aKeyArr.length&&(aPrimary.className!='');j++)
             {
                 if(aPrimary[i].className.search(aKeyArr[j])==-1)
                 {
@@ -283,6 +285,7 @@ vQuery.mainSelector=(function(){
             if(aPrimary[i].verify==true)
             {
                 result.push(aPrimary[i]);
+                aPrimary[i].removeAttribute('verify');
             }       
         }
         return result;
@@ -398,7 +401,7 @@ vQuery.mainSelector=(function(){
     //main selector part2 over
     //main selector part3 final version 
     //this module's purpose is to work the descendant out 
-    function finalSelector(sSelector)
+    function finalSelector(sSelector,oParent)
     {
        return (function(){
             var splitPattern=/\s+/g;
@@ -413,7 +416,7 @@ vQuery.mainSelector=(function(){
             {
                 if(i==0)
                 {
-                     aParentNode[i]=firstSelector(aPrimary[i]);
+                     aParentNode[i]=firstSelector(aPrimary[i],oParent);
                 }
                 else
                 {
@@ -428,11 +431,11 @@ vQuery.mainSelector=(function(){
 
     }        
     return {
-        'finalSelector':function(sMixinSelector){
-            return finalSelector(sMixinSelector);
+        'finalSelector':function(sMixinSelector,parentNode){
+            return finalSelector(sMixinSelector,parentNode);
         },
-        'firstSelector':function(sMixinSelector){
-            return  firstSelector(sMixinSelector);
+        'firstSelector':function(sMixinSelector,parentNode){
+            return  firstSelector(sMixinSelector,parentNode);
         }
     };
 })();
@@ -448,13 +451,14 @@ function vQuery(vArg){
     this.elements=[];   
     switch(typeof vArg)
     {
-  	    case 'function':
-            window.onload=vArg;
-  	    break;
-  	    case 'string':
+        case 'string':
           
             this.elements=vQuery.mainSelector.finalSelector(vArg); 
         break;
+  	    case 'function':
+            window.onload=vArg;
+  	    break;
+  	  
   	    case 'object':
            // DOM node (EQ,document), DOM-node array
   	       if(vArg.length)
@@ -783,7 +787,7 @@ vQuery.prototype.find=function(vArg)
 {
  
     var result=[];
-    result.push.apply(result,vQuery.mainSelector.firstSelector(vArg,this.elements));
+    result.push.apply(result,vQuery.mainSelector.finalSelector(vArg,this.elements));
     return $(result);  
 }
 //Finding child nodes is complete
@@ -958,13 +962,15 @@ vQuery.prototype.text=function()
 //2 html  single element
 vQuery.prototype.html=function()
 {
+
    if(arguments.length==0)
    {
         return this.elements[0].innerHTML;
 
    }
-   else
+   else if(arguments[0]!=undefined)
    {
+
         this.elements[0].innerHTML=arguments[0];
    }
    return this;
