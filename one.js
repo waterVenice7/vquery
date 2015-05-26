@@ -82,6 +82,7 @@ vQuery.methodSquare=(function(){
         var result=[];
         var aEle=oParent.getElementsByTagName('*');
         var sClass1='\\b'+sClass+'\\b';
+        //20150523 update 
         for(var i=0;i<aEle.length&&(aEle[i].className!='');i++)
         {
               if(aEle[i].className.search(sClass1)!=-1)
@@ -455,13 +456,13 @@ function vQuery(vArg){
           
             this.elements=vQuery.mainSelector.finalSelector(vArg); 
         break;
-  	    case 'function':
+        case 'function':
             window.onload=vArg;
-  	    break;
-  	  
-  	    case 'object':
+        break;
+      
+        case 'object':
            // DOM node (EQ,document), DOM-node array
-  	       if(vArg.length)
+           if(vArg.length)
             {
                this.elements=vArg;
             }
@@ -470,7 +471,7 @@ function vQuery(vArg){
                 //alert(vArg.length);       
                 this.elements.push(vArg);
             }
-  	    break;
+        break;
     }
     this.length=this.elements.length;
     //write (this.length) here isn't a standard method ,
@@ -481,16 +482,16 @@ function vQuery(vArg){
 //$()
 function $(vArg)
 {
-	return new vQuery(vArg);
+    return new vQuery(vArg);
 }
 //$() over
 //click
 vQuery.prototype.click=function(fn)
 {
-	  for(var i=0;i<this.elements.length;i++)
-	  {  
-		    vQuery.methodSquare.myAddEvent(this.elements[i],'click',fn);
-	  }
+      for(var i=0;i<this.elements.length;i++)
+      {  
+            vQuery.methodSquare.myAddEvent(this.elements[i],'click',fn);
+      }
     return this;
 }
 //mousemove
@@ -531,9 +532,9 @@ vQuery.prototype.absolute=function()
 //show
 vQuery.prototype.show=function()
 {
-	  for(var i=0;i<this.elements.length;i++)
-	  {
-		    this.elements[i].style.display='block';
+      for(var i=0;i<this.elements.length;i++)
+      {
+            this.elements[i].style.display='block';
     }
     return this;
 }
@@ -541,10 +542,10 @@ vQuery.prototype.show=function()
 //hide 
 vQuery.prototype.hide=function()
 {
-	  for(var i=0;i<this.elements.length;i++)
-	  {
+      for(var i=0;i<this.elements.length;i++)
+      {
         this.elements[i].style.display='none';
-	  }
+      }
     return this;
 }
 //hide over
@@ -619,15 +620,15 @@ vQuery.prototype.slideDown=function()
 //hover 
 vQuery.prototype.hover=function(fn1,fn2)
 {
-	  for(var i=0;i<this.elements.length;i++)
-	  {
-		    vQuery.methodSquare.myAddEvent(this.elements[i],'mouseover',fn1);
+      for(var i=0;i<this.elements.length;i++)
+      {
+            vQuery.methodSquare.myAddEvent(this.elements[i],'mouseover',fn1);
             if(fn2)
             {
                 vQuery.methodSquare.myAddEvent(this.elements[i],'mouseout',fn2);
             }
-		    
-	  }
+            
+      }
     return this;
 }
 //hover over
