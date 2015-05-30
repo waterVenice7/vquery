@@ -8,26 +8,30 @@ update log
 展望：
 将不再对ie低版本进行兼容，原因在于ie低版本即将被淘汰，过多的兼容带来了不必要的操作，
 从而导致了无法对dom编程进行进一步的改进
-20150526
-对于高性能javascript  dom编程
-有了更深的了解
-将会对如下点进行更新
-核心点：缓存dom对象，减少dom遍历
-​(1)缓存选取到的集合
-var coll=document.getElementsByTagName_r('div'),
-(2)缓存length
-len=coll.length
-​(3)多次遍历进行缓存操作
-tem=coll[i];
-(4)
-选取子元素将改进为
-通过firstChild nextSibling while
-操作，速度加快
-(5)
-多次style操作转换为cssText
-(6)
-animate处理将全部转换为绝对定位
-(7)
-对于大量的元素具有相似的特征比如a链接，将统一采用事件委托进行处理，
-优点：减少句柄的处理量，增强性能
-优点2：可以解决后来添加的问题
+
+
+20150530
+《1》对if else 进行更改，引入哈弗曼编码的思想，频率高的优先放在前面
+《2》缩写if  else  大量采用三目，&&,||
+《3》大量缓存length 缓存dom集合
+《4》cssText  更改style.top,style.left
+《5》while大量替代for遍历
+《6》引入hashTable  解决switch  大范围判断问题（其实此时并没有大范围判断，不过不会减慢速度，也算为以后的应用打下基础，嘿嘿）
+《7》 addEventListener 采用了高性能javascript的延迟加载技术，也就是一次重写，到处运行，
+	此后将不再需要判断
+       当然，也可以采用jquery的做法，脚本预加载
+遇到的
+问题1：
+更改的过程中变量命名冲突以及混乱成为非常大的问题，
+必须要想到一个合理的解决办法；
+问题2：
+bStop=false  在&&中要加()
+问题3：
+主体选择器要偷偷运行一次(finalSelector)
+问题3：
+有些时候遍历强调顺序，注意
+
+成果：
+在ie7测试过程，选取一个深度为509的节点，jquery用了21ms,引入高性能javascript后one.js用了
+26ms,以往的版本用了40ms，可以说是性能提升了33%，
+

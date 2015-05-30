@@ -37,96 +37,108 @@ Otherwise I would not have got so tired
 vQuery.aSlideDom=[];
 vQuery.aSlideHeight=[];
 vQuery.methodSquare=(function(){
-    function myAddEvent(obj,event,fn)
+    function myAddEvent(obj,event,fn,cancle)
     {
-        if(obj.attachEvent)
+        if(obj.addEventListener)
         {     
-
-              obj.attachEvent('on'+event,function(ev)
+            //引入高性能javascript  减少重复性判断
+            var myAddEvent=function(obj,event,fn,cancle)
             {
-                ev=ev||event;
-                ev.cancelBubble=true;
-                //ie       
-                if(fn.call(obj)==false)
+                obj.addEventListener(event,function(ev)
                 {
-                    return false;
-                }
-            });
+                    // console.log(fn);
+                    ev=ev||window.event;  
+                    cancle&&ev.stopPropagation();               
+                    (fn.call(obj)==false)&&ev.preventDefault();
+                },false);
+            }         
         }
-          else{     
-            obj.addEventListener(event,function(ev)
-            {
-                // console.log(fn);
-                ev=ev||event;         
-                ev.stopPropagation();
-                if(fn.call(obj)==false)
+        else
+        {   
+           var  myAddEvent=function(obj,event,fn,cancle)
+           {
+                obj.attachEvent('on'+event,function(ev)
                 {
-                    ev.preventDefault();
-                }
-            },false);
-          }
-    }
-    function myRemoveEvent(obj,event,fn)
-    {
-        //20150509  hasn't finished
-        if(obj.attachEvent)
-        {     
-            obj.detachEvent('on'+event,fn);
-        }
-        else{ 
-            obj.removeEventListener(event,fn,false);
+                    ev=ev||window.event;
+                    cancle&&(ev.cancelBubble=true);
+                    //ie       
+                    if(fn.call(obj)==false)
+                    {
+                        return false;           
+                    }
+                });  
+           }
         }
     }
+    function myRemoveEvent(obj,event,fn,cancle)
+    {
+        if(obj.removeEventListener)
+        {     
+            //引入高性能javascript  减少重复性判断
+            var myRemoveEvent=function(obj,event,fn,cancle)
+            {
+                obj.removeEventListener(event,function(ev)
+                {
+                    // console.log(fn);
+                    ev=ev||window.event;  
+                    cancle&&ev.stopPropagation();               
+                    (fn.call(obj)==false)&&ev.preventDefault();
+                },false);
+            }         
+        }
+        else
+        {   
+           var  myRemoveEvent=function(obj,event,fn,cancle)
+           {
+                obj.detachEvent('on'+event,function(ev)
+                {
+                    ev=ev||window.event;
+                    cancle&&(ev.cancelBubble=true);
+                    //ie       
+                    if(fn.call(obj)==false)
+                    {
+                        return false;
+                    }
+                                
+                });  
+           }
+        }
+    }
+    
     function getByClass(oParent,sClass)
     {
         var result=[];
         var aEle=oParent.getElementsByTagName('*');
         var sClass1='\\b'+sClass+'\\b';
+        var length=aEle.length;
         //20150523 update 
-        for(var i=0;i<aEle.length&&(aEle[i].className!='');i++)
-        {
-              if(aEle[i].className.search(sClass1)!=-1)
-              {
-                    result.push(aEle[i]);
-              }
+        for(var i=0;i<length;i++)
+        {       
+            (aEle[i].className.search(sClass1)!=-1)&& result.push(aEle[i]);
         }
         return result;
     }
     function getStyle(obj,attr)
     {
-        if(obj.currentStyle)
-        {
-            return obj.currentStyle[attr];
-        }
-        else
-        {
-            return getComputedStyle(obj,false)[attr];
-        }
+      
+       return  obj.currentStyle?obj.currentStyle[attr]:getComputedStyle(obj,false)[attr];
     }
     function getIndex(obj)
     {
         var aBrother=obj.parentNode.children;
         var i=0;  
-        for(i=0;i<aBrother.length;i++)
+        var len=aBrother.length;
+        for(;i<len;i++)
         {
-            if(aBrother[i]==obj)
-            {
-                return i;
-            }
+          if(aBrother[i]==obj)
+          {
+              return i;
+          }
         }
     }
     function startMove(obj, json, fn)
     {
-        //change the frequency
-        // if(!arguments[3])
-        // {
-        //     var fre=30;
-        // }
-        // else
-        // {
-        //     fre=arguments[3];
-        // } 
-        //fre=(arguments[3]===undefined)?30:arguments[3];
+      
         fre=arguments[3]||30;
         //Avoid the cumulative timer cause acceleration problems
         clearInterval(obj.timer);
@@ -152,77 +164,67 @@ vQuery.methodSquare=(function(){
                 { 
                     //1.acquire the current value
                     var iCur=0;
-                    if(attr=='opacity')
+                    if(attr!='opacity')
                     {
-                        iCur=parseInt(parseFloat(vQuery.methodSquare.getStyle(obj,attr))*100);
+                         iCur=parseInt(vQuery.methodSquare.getStyle(obj,attr));   
+                       
                     }
                     else
                     {
-                        iCur=parseInt(vQuery.methodSquare.getStyle(obj,attr));         
+                         iCur=parseInt(parseFloat(vQuery.methodSquare.getStyle(obj,attr))*100); 
                     }       
                     //2.cal the speed
-                    if(attr=='opacity')
+              
+                    var iSpeed=(json[attr]-iCur)/8;          
+                    iSpeed=iSpeed>0?Math.ceil(iSpeed):Math.floor(iSpeed);                        
+                    //3.observe and confirm  the terminating circumstance 
+                    //for chrome bug we proceed with special procedure
+                    if(attr!='opacity')
                     {
-                        //console.log(obj);
-                        var iSpeed=(json[attr]-iCur)/8;          
-                        iSpeed=iSpeed>0?Math.ceil(iSpeed):Math.floor(iSpeed);          
+                        (iCur!=json[attr])&&(bStop=false);
+                      
                     }
                     else
                     {
-                        var iSpeed=(json[attr]-iCur)/8;
-                        iSpeed=iSpeed>0?Math.ceil(iSpeed):Math.floor(iSpeed);
-                         
-                    }        
-                    //3.observe and confirm  the terminating circumstance 
-                    //for chrome bug we proceed with special procedure
-                    if(attr=='opacity')
-                    {
-                        if(Math.abs(json[attr]-iCur)<=8)
+                        if(Math.abs(json[attr]-iCur)>8)
                         {
-                            iCur=json[attr];
-                            obj.style.filter='alpha(opacity:'+(iCur+iSpeed)+')';
-                            obj.style.opacity=(iCur+iSpeed)/100;            
+                            bStop=false;    
                         }
                        //20150318 update error(opacity)
                         else
                         {
-                            bStop=false;
-                        }
-                    }
-                    else
-                    {
-                        if(iCur!=json[attr])
-                        {
-                            bStop=false;             
+                            
+                            iCur=json[attr];
+                            obj.style.filter='alpha(opacity:'+(iCur+iSpeed)+')';
+                            obj.style.opacity=(iCur+iSpeed)/100;     
                         }
                     }
                     //4 main change 
-                    if(attr=='opacity')
+                    if(attr!='opacity')
                     {
-                        obj.style.filter='alpha(opacity:'+(iCur+iSpeed)+')';
-                        obj.style.opacity=(iCur+iSpeed)/100;         
+                        obj.style[attr]=iCur+iSpeed+'px';
+                           
                     }
                     else
                     { 
-                        obj.style[attr]=iCur+iSpeed+'px';
+                        obj.style.filter='alpha(opacity:'+(iCur+iSpeed)+')';
+                        obj.style.opacity=(iCur+iSpeed)/100;  
                     }
                 }
                 if(bStop)
                 {     
                     clearInterval(obj.timer);        
                     //chain move
-                    if(fn)
-                    {
-                        fn();
-                    }
+                    fn&&fn();
                 }
             }, fre);
         }
     }
     function absolute(obj)
     {
-        obj.style.left=obj.offsetLeft+'px';
-        obj.style.top=obj.offsetTop+'px';   
+        var left=obj.offsetLeft,
+            top=obj.offsetTop;  
+        obj.cssText="left="+left+"px;top="+top+'px;';
     }
     function absoluteExtra(obj)
     {
@@ -258,145 +260,222 @@ vQuery.methodSquare=(function(){
         }
     }
 })();
+
 vQuery.mainSelector=(function(){
+    
     //vQuery.mainSelector
+     var a={
+       'finalSelector':function(){
+
+       },
+        'firstSelector':function(sMixinSelector,parentNode){
+            return  firstSelector(sMixinSelector,parentNode);
+        }
+    };
+    (function(){
+        if(document.querySelectorAll)
+        {
+          
+            a['finalSelector']=function(sMixinSelector,parentNode){
+                return parentNode.querySelectorAll(sMixinSelector);
+            };
+        }
+        else
+        {
+            a['finalSelector']=function(sMixinSelector,parentNode)
+            {
+                return finalSelector(sMixinSelector,parentNode);
+            }
+        }
+    })();
+  
+     var hashSelector={
+        '#':function(oParent,vArg,result)
+            {
+                    var aEle=oParent.getElementById(vArg.substring(1));
+                    result.push(aEle);
+            },
+        ".":function(vArg,oParent,result)
+            {
+                    severalClass(vArg,oParent,result);
+            }
+
+
+    };
     // based by the primary array and the akeyArr to get the accurate result 
-    function selectElements(aPrimary,aKeyArr,result,iStart)
+    function addElement(aPrimary,result)
+    {
+        result.push(aPrimary);
+        aPrimary.removeAttribute('verify');
+    }
+    function selectElements(aPrimary0,aKeyArr,result,iStart)
     { 
+
+        //缓存dom集合
+        var aPrimary=aPrimary0;
         //4 strict key words
-        for(var k=iStart;k<aKeyArr.length;k++)
+        for(var k=iStart,len=aKeyArr.length;k<len;k++)
         {           
             aKeyArr[k]='\\b'+aKeyArr[k]+'\\b';
         }
         //5   examine  the whole array content then filter what we want 
-        for(var i=0;i<aPrimary.length;i++)
+        for(var i=0,len=aPrimary.length;i<len;i++)
         {      
-            aPrimary[i].verify=true;        
-            for(var j=iStart;j<aKeyArr.length&&(aPrimary.className!='');j++)
+            aPrimary[i].verify=true;
+            len2=aKeyArr.length;
+            for(var m=iStart;m<len2;m++)
             {
-                if(aPrimary[i].className.search(aKeyArr[j])==-1)
-                {
-                   aPrimary[i].verify=false;
-                }
-            }       
+                 (aPrimary[i].className.search(aKeyArr[len2])==-1)&&(aPrimary[i].verify=false);
+
+            }              
+                     
         }
         //6  put the filter part into the element array
-        for(var i=0;i<aPrimary.length;i++)
+        while(len--)
         {    
-            if(aPrimary[i].verify==true)
-            {
-                result.push(aPrimary[i]);
-                aPrimary[i].removeAttribute('verify');
-            }       
+           (aPrimary[len].verify==true)&&addElement(aPrimary[len],result);
         }
         return result;
+    }
+    function selectAttrPart(oParent,aPri,aAttr,result,sQuote)
+    {
+
+        var aOriEle=oParent.getElementsByTagName(aPri[0]);   
+        var len=aOriEle.length;    
+        aAttr[0]=aAttr[0].replace(sQuote,'');                          
+        if(aAttr.length==1)
+        {
+                   
+            while(len--)
+            {
+                (aOriEle[len].getAttribute(aAttr[0])!=null)&&result.push(aOriEle[len]);   
+            }
+        }
+        else  if(aAttr.length>1){       
+            aAttr[1]=aAttr[1].replace(sQuote,'');
+            while(len--)
+            {
+                ((aOriEle[len].getAttribute(aAttr[0])!=null)&&
+                    (aOriEle[len].getAttribute(aAttr[0]))==aAttr[1]
+                    )&&result.push(aOriEle[len]);         
+            }               
+        }
+    }
+    function selectAttr(sAttr,vArg,oParent,result)
+    {
+        sAttr[0]=sAttr[0].replace('[','');
+        sAttr[0]=sAttr[0].replace(']','');
+        var aAttr=sAttr[0].split('='),
+                    aPri=vArg.split('['),
+                    i=0
+                    sQuote=/'|"+/g;
+        if(oParent instanceof Array)
+        {
+            i=oParent.length;
+            while(i--)
+            {
+                selectAttrPart(oParent[i],aPri,aAttr,result,sQuote); 
+            }       
+        }
+        else
+        {
+            selectAttrPart(oParent,aPri,aAttr,result,sQuote);
+        }
+        
+        
+    }
+    function tagClass(vArg,oParent,result)
+    {
+
+        //2  key words
+        var aKeyArr=vArg.split('.'); 
+        //3 use the vQuery.methodSquare.getByClass get the primary arr
+        if(oParent!=document)
+        {
+            //we will consider the oParent as the array even if its length is one
+            var y=oParent.length,
+                i=0,
+                aPrimary=null;
+
+            while(i<y)
+            {
+               aPrimary=oParent[i].getElementsByTagName(aKeyArr[0]);      
+               result=selectElements(aPrimary,aKeyArr,result,1);    
+               i++;    
+            }
+        }
+        else
+        {
+           //tag single module 
+
+            // var aPrimary=oParent.getElementsByTagName(aKeyArr[0]);
+            // result=aPrimary;
+            aPrimary=document.getElementsByTagName(aKeyArr[0]);                  
+            result=selectElements(aPrimary,aKeyArr,result,1);  
+        }
+      
+    }
+    function severalClass(vArg,oParent,result)
+    {
+        //1 slice 
+          
+        var aEle2=vArg.substring(1);
+
+        //2  key words
+        var aKeyArr=aEle2.split('.');          
+        //3 use the vQuery.methodSquare.getByClass get the primary arr 
+        var aPrimary=null;
+        if(oParent!=document)
+        {
+
+           var x=oParent.length;           
+           while(x--)
+           {
+                aPrimary=vQuery.methodSquare.getByClass(oParent[x],aKeyArr[0]);
+                result=selectElements(aPrimary,aKeyArr,result,0);              
+            }           
+        }
+        else
+        {
+
+            aPrimary=vQuery.methodSquare.getByClass(oParent,aKeyArr[0]);   
+          
+            result=selectElements(aPrimary,aKeyArr,result,0); 
+        }
+    }
+    function firstExtra(vArg,oParent,result)
+    {
+        var sAttrPattern=/[\[].+]/;
+        if(!Boolean(sAttr=vArg.match(sAttrPattern))){
+            //1 attribute selector 
+           
+            tagClass(vArg,oParent,result);                   
+        }  
+        else{                  
+            selectAttr(sAttr,vArg,oParent,result);
+           
+        }  
     }
     //main selector part1 over
     //main selector part2
     //firstSelector function  won't consider the descendant selector but solve the 
     //tag,class,id,attribute module 
+   
     function firstSelector(vArg,oParent)
     {  
         var result=[];
-        // if we can't get the oParent paramater we will proceed with the document dom 
-        if(!Boolean(oParent))
-        {
-            oParent=document;
-        }
-        switch(vArg.charAt(0))
-        {
-            case '#':
-               (function(){
-                    var aEle=document.getElementById(vArg.substring(1));
-                    result.push(aEle);
-               })();
-            break;
-            case '.':     
-                (function(){
-                    //1 slice    
-                    var aEle2=vArg.substring(1);
-                    //2  key words
-                    var aKeyArr=aEle2.split('.');          
-                    //3 use the vQuery.methodSquare.getByClass get the primary arr
-                    if(oParent!=document)
-                    {
-          
-                        for(var x=0;x<oParent.length;x++)
-                        {
-                            var aPrimary=vQuery.methodSquare.getByClass(oParent[x],aKeyArr[0]);
-                            result=selectElements(aPrimary,aKeyArr,result,0);                
-                        }           
-                    }
-                    else
-                    {
-                        var aPrimary=vQuery.methodSquare.getByClass(oParent,aKeyArr[0]);
-                        result=selectElements(aPrimary,aKeyArr,result,0);
-                    }
-                })();
-            break;
-            default:
-                //intro   tag and class mixin status || attribute selector 
 
-                var sAttrPattern=/[\[].+]/;
-                if(Boolean(sAttr=vArg.match(sAttrPattern))){
-                    //1 attribute selector 
-                    (function(){
-                        sAttr[0]=sAttr[0].replace('[','');
-                        sAttr[0]=sAttr[0].replace(']','');
-                        var aAttr=sAttr[0].split('='),
-                                    aPri=vArg.split('['),
-                                    aOriEle=document.getElementsByTagName(aPri[0]),
-                                    sQuote=/'|"+/g;
-                                                                      
-                        if(aAttr.length==1)
-                        {
-                            for(var i=0;i<aOriEle.length;i++){
-                                if(aOriEle[i].getAttribute(aAttr[0])!=null){
-                                    result.push(aOriEle[i]);
-                                }                   
-                            }
-                            
-                        }
-                        else  if(aAttr.length>1){
-                            for(var i=0;i<aOriEle.length;i++){
-                                aAttr[1]=aAttr[1].replace(sQuote,'');
-                                if((aOriEle[i].getAttribute(aAttr[0])!=null)&&
-                                    (aOriEle[i].getAttribute(aAttr[0]))==aAttr[1]
-                                    )
-                                {
-                                    result.push(aOriEle[i]);
-                                }           
-                            }
-                                
-                        }
-                    })();
-                    
-                }  
-                else{
-                   (function(){
-                        //2  key words
-                        var aKeyArr=vArg.split('.');         
-                        //3 use the vQuery.methodSquare.getByClass get the primary arr
-                        if(oParent!=document)
-                        {
-                            //we will consider the oParent as the array even if its length is one
-                            for(var y=0;y<oParent.length;y++)
-                            {
-                               var aPrimary=oParent[y].getElementsByTagName(aKeyArr[0]);                  
-                               result=selectElements(aPrimary,aKeyArr,result,1);             
-                            }
-                        }
-                        else
-                        {
-                           //tag single module 
-                            var aPrimary=oParent.getElementsByTagName(aKeyArr[0]);
-                            result=aPrimary;
-                        
-                        }
-                   })();      
-                }   
-                break;
+        // if we can't get the oParent paramater we will proceed with the document dom     
+        (!Boolean(oParent))&&(oParent=document);  
+        if(hashSelector.hasOwnProperty(vArg.charAt(0)))
+        {
+            hashSelector[vArg.charAt(0)](vArg,oParent,result);
         }
+        else
+        {
+          
+            firstExtra(vArg,oParent,result);
+        }        
         return result;
     }
     //main selector part2 over
@@ -413,7 +492,9 @@ vQuery.mainSelector=(function(){
             var aParentNode=[];
             //we will use the firstSelector function for split,and proceed with the aParentNode to decline the
             //time
-            for(var i=0;i<aPrimary.length;i++)
+            var len=aPrimary.length;
+            var  i=0;
+            while(i<len)
             {
                 if(i==0)
                 {
@@ -421,24 +502,15 @@ vQuery.mainSelector=(function(){
                 }
                 else
                 {
-                     var aTem=firstSelector(aPrimary[i],aParentNode[i-1]);
+                     var aTem=firstSelector(aPrimary[i],aParentNode[i-1]);  
                      aParentNode[i]=aTem;
                 }
+                i++;
             }
-           return aParentNode[aPrimary.length-1];
-           
-        })();
-        
-
-    }        
-    return {
-        'finalSelector':function(sMixinSelector,parentNode){
-            return finalSelector(sMixinSelector,parentNode);
-        },
-        'firstSelector':function(sMixinSelector,parentNode){
-            return  firstSelector(sMixinSelector,parentNode);
-        }
-    };
+            return aParentNode[aPrimary.length-1];      
+        })();      
+    }     
+    return a;
 })();
 //LayoutTransform is mainly used for layout is converted to an absolute, 
 //for sports action
@@ -448,30 +520,35 @@ vQuery.mainSelector=(function(){
 
 //vQuery.methodSquare.startMove  over
 //vquery 
+vQuery.hashTable={
+    'string':function(vArg,elements)
+    {
+         vArg=vArg.replace(/^\s+|\s+$/g,'');
+         this.elements=vQuery.mainSelector.finalSelector(vArg,document); //1
+    },
+    'function':function(vArg){
+        window.onload=vArg;
+
+    },
+    'object':function(vArg,elements){
+        // DOM node (EQ,document), DOM-node array
+        if(vArg.length)
+        {
+            this.elements=vArg;
+        }
+        else
+        {
+            //alert(vArg.length);       
+            this.elements.push(vArg);
+        }
+    }
+}
 function vQuery(vArg){
     this.elements=[];   
-    switch(typeof vArg)
+    var a=(typeof vArg);///yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+    if(vQuery.hashTable.hasOwnProperty(a))
     {
-        case 'string':
-          
-            this.elements=vQuery.mainSelector.finalSelector(vArg); 
-        break;
-        case 'function':
-            window.onload=vArg;
-        break;
-      
-        case 'object':
-           // DOM node (EQ,document), DOM-node array
-           if(vArg.length)
-            {
-               this.elements=vArg;
-            }
-            else
-            {
-                //alert(vArg.length);       
-                this.elements.push(vArg);
-            }
-        break;
+        vQuery.hashTable[a].call(this,vArg);
     }
     this.length=this.elements.length;
     //write (this.length) here isn't a standard method ,
@@ -788,7 +865,7 @@ vQuery.prototype.find=function(vArg)
 {
  
     var result=[];
-    result.push.apply(result,vQuery.mainSelector.finalSelector(vArg,this.elements));
+    result.push.apply(result,vQuery.mainSelector.finalSelector(vArg,this.elements));//1
     return $(result);  
 }
 //Finding child nodes is complete
