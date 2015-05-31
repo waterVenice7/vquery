@@ -107,14 +107,18 @@ vQuery.methodSquare=(function(){
     
     function getByClass(oParent,sClass)
     {
-        var result=[];
-        var aEle=oParent.getElementsByTagName('*');
-        var sClass1='\\b'+sClass+'\\b';
-        var length=aEle.length;
+        var result=[],
+           aEle=oParent.getElementsByTagName('*'),
+           sClass1=new RegExp(' ' + sClass + ' ', 'i'),
+           len=aEle.length;
         //20150523 update 
-        for(var i=0;i<length;i++)
-        {       
-            (aEle[i].className.search(sClass1)!=-1)&& result.push(aEle[i]);
+        while(len--)     
+        {
+            if(aEle[len].nodeType===1)
+            {
+                (sClass1.test(' ' + aEle[len].className + ' '))&& result.push(aEle[len]);
+            }
+            
         }
         return result;
     }
@@ -316,18 +320,19 @@ vQuery.mainSelector=(function(){
         //4 strict key words
         for(var k=iStart,len=aKeyArr.length;k<len;k++)
         {           
-            aKeyArr[k]='\\b'+aKeyArr[k]+'\\b';
+            aKeyArr[k]=new RegExp(' ' + aKeyArr[k] + ' ', 'i');
         }
         //5   examine  the whole array content then filter what we want 
         for(var i=0,len=aPrimary.length;i<len;i++)
-        {      
-            aPrimary[i].verify=true;
-            len2=aKeyArr.length;
-            for(var m=iStart;m<len2;m++)
-            {
-                 (aPrimary[i].className.search(aKeyArr[len2])==-1)&&(aPrimary[i].verify=false);
+        {     
 
-            }              
+            aPrimary[i].verify=true;
+            len2=aKeyArr.length-1;
+            while(len2>=iStart)
+            {
+                (aKeyArr[len2].test(' ' + aPrimary[i].className + ' '))&&(aPrimary[i].verify=false);
+                len2--;
+            }    
                      
         }
         //6  put the filter part into the element array
@@ -461,12 +466,12 @@ vQuery.mainSelector=(function(){
     //firstSelector function  won't consider the descendant selector but solve the 
     //tag,class,id,attribute module 
    
-    function firstSelector(vArg,oParent)
+    function firstSelector(vArg,oParent0)
     {  
         var result=[];
 
         // if we can't get the oParent paramater we will proceed with the document dom     
-        (!Boolean(oParent))&&(oParent=document);  
+        oParent=oParent0||document;  
         if(hashSelector.hasOwnProperty(vArg.charAt(0)))
         {
             hashSelector[vArg.charAt(0)](vArg,oParent,result);

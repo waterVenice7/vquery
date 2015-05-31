@@ -35,3 +35,12 @@ bStop=false  在&&中要加()
 在ie7测试过程，选取一个深度为509的节点，jquery用了21ms,引入高性能javascript后one.js用了
 26ms,以往的版本用了40ms，可以说是性能提升了33%，
 
+
+20150531
+《1》
+主要针对getByClass，selectElements进行更新，引入严格模式，对于ie7下的深度590节点的测试，severalClass
+的选取速度已经超越jquery,jquery 用时20 ，one.js 用时9
+测试文件 请查看 test/one test/the most complex selector
+缺点：作用链调用过于频繁，将会引入json制表减少作用域调用
+缺点2：对于大量引用全局变量的情况，将引入局部变量+dom集合缓存技术（也就是零全局变量模式）
+缺点3：命名冲突仍旧要解决，预计采用零全局变量的模式》module模式》单全局变量模式
