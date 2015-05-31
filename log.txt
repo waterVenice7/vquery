@@ -44,3 +44,15 @@ bStop=false  在&&中要加()
 缺点：作用链调用过于频繁，将会引入json制表减少作用域调用
 缺点2：对于大量引用全局变量的情况，将引入局部变量+dom集合缓存技术（也就是零全局变量模式）
 缺点3：命名冲突仍旧要解决，预计采用零全局变量的模式》module模式》单全局变量模式
+
+20150531 
+<1>
+tagClass severalClass 
+修复bug
+测试文件 请查看 test/one test/the most complex selector
+优点：tagClass severalClass （没有测试后代）
+	选取时间是jquery一半
+	深度590节点，jquery 20 one.js 9
+	原因：初级数组建立在Class上面
+总结：性能优化暂时停止，有点累了
+缺点仍旧是上面三个

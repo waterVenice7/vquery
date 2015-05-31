@@ -114,10 +114,9 @@ vQuery.methodSquare=(function(){
         //20150523 update 
         while(len--)     
         {
-            if(aEle[len].nodeType===1)
-            {
+        
                 (sClass1.test(' ' + aEle[len].className + ' '))&& result.push(aEle[len]);
-            }
+            
             
         }
         return result;
@@ -268,6 +267,7 @@ vQuery.methodSquare=(function(){
 vQuery.mainSelector=(function(){
     
     //vQuery.mainSelector
+    /*  外部接口*/
      var a={
        'finalSelector':function(){
 
@@ -276,6 +276,7 @@ vQuery.mainSelector=(function(){
             return  firstSelector(sMixinSelector,parentNode);
         }
     };
+    /*初始化*/
     (function(){
         if(document.querySelectorAll)
         {
@@ -292,7 +293,7 @@ vQuery.mainSelector=(function(){
             }
         }
     })();
-  
+    /*  用于处理后代选择器分割后的情况，对字符串进行二级判断*/
      var hashSelector={
         '#':function(oParent,vArg,result)
             {
@@ -306,42 +307,9 @@ vQuery.mainSelector=(function(){
 
 
     };
-    // based by the primary array and the akeyArr to get the accurate result 
-    function addElement(aPrimary,result)
-    {
-        result.push(aPrimary);
-        aPrimary.removeAttribute('verify');
-    }
-    function selectElements(aPrimary0,aKeyArr,result,iStart)
-    { 
-
-        //缓存dom集合
-        var aPrimary=aPrimary0;
-        //4 strict key words
-        for(var k=iStart,len=aKeyArr.length;k<len;k++)
-        {           
-            aKeyArr[k]=new RegExp(' ' + aKeyArr[k] + ' ', 'i');
-        }
-        //5   examine  the whole array content then filter what we want 
-        for(var i=0,len=aPrimary.length;i<len;i++)
-        {     
-
-            aPrimary[i].verify=true;
-            len2=aKeyArr.length-1;
-            while(len2>=iStart)
-            {
-                (aKeyArr[len2].test(' ' + aPrimary[i].className + ' '))&&(aPrimary[i].verify=false);
-                len2--;
-            }    
-                     
-        }
-        //6  put the filter part into the element array
-        while(len--)
-        {    
-           (aPrimary[len].verify==true)&&addElement(aPrimary[len],result);
-        }
-        return result;
-    }
+   
+   
+    
     function selectAttrPart(oParent,aPri,aAttr,result,sQuote)
     {
 
@@ -389,6 +357,11 @@ vQuery.mainSelector=(function(){
         
         
     }
+     function addElement(aPrimary,result)
+    {
+        result.push(aPrimary);
+        aPrimary.removeAttribute('verify');
+    }
     function tagClass(vArg,oParent,result)
     {
 
@@ -397,28 +370,80 @@ vQuery.mainSelector=(function(){
         //3 use the vQuery.methodSquare.getByClass get the primary arr
         if(oParent!=document)
         {
-            //we will consider the oParent as the array even if its length is one
+
             var y=oParent.length,
                 i=0,
                 aPrimary=null;
 
             while(i<y)
             {
-               aPrimary=oParent[i].getElementsByTagName(aKeyArr[0]);      
-               result=selectElements(aPrimary,aKeyArr,result,1);    
+                /*focus*/
+               result=tagClassSelect(aKeyArr,oParent,result);
+              
                i++;    
             }
         }
         else
         {
-           //tag single module 
-
-            // var aPrimary=oParent.getElementsByTagName(aKeyArr[0]);
-            // result=aPrimary;
-            aPrimary=document.getElementsByTagName(aKeyArr[0]);                  
-            result=selectElements(aPrimary,aKeyArr,result,1);  
+            /*focus*/
+            result=tagClassSelect(aKeyArr,oParent,result);
+            
         }
       
+    }
+    function tagClassSelect(aKeyArr,oParent,result)
+    {
+        /*k len*/
+        var aPrimary=vQuery.methodSquare.getByClass(oParent,aKeyArr[1]);
+        for(var k=1,len=aKeyArr.length;k<len;k++)
+        {           
+            aKeyArr[k]=new RegExp(' ' + aKeyArr[k] + ' ', 'i');
+        }
+        /* len2 l m*/
+        var len2=aPrimary.length;
+        var l=0;
+         
+        if(aKeyArr.length!=2)
+        {
+            var m;
+            for(;l<len2;l++)
+            {
+                aPrimary[l].verify=true; 
+                m=2;
+                for(;m<len;m++)
+                {
+                     
+                     (!(aKeyArr[m].test(' ' + aPrimary[l].className + ' ')))&&(aPrimary[l].verify=false);
+
+                }
+                if(aPrimary[l].nodeName.toLowerCase()!=aKeyArr[0])
+                {
+                    aPrimary[l].verify=false;
+                }
+                (aPrimary[l].verify==true)&&addElement(aPrimary[l],result);
+               
+            }
+            
+
+        }
+        else
+        {
+     
+            //  nodeType 遍历即可
+            
+            for(;l<len2;l++)
+            {
+                aPrimary[l].verify=true; 
+                if(aPrimary[l].nodeName.toLowerCase()!=aKeyArr[0])
+                {
+                    aPrimary[l].verify=false;
+                }
+                (aPrimary[l].verify==true)&&addElement(aPrimary[l],result);
+               
+            }
+        }
+
+        return result;
     }
     function severalClass(vArg,oParent,result)
     {
@@ -427,7 +452,14 @@ vQuery.mainSelector=(function(){
         var aEle2=vArg.substring(1);
 
         //2  key words
-        var aKeyArr=aEle2.split('.');          
+        var aKeyArr=aEle2.split('.');
+        /*one  class return */  
+        if(aKeyArr.length==1)
+        {
+            result=vQuery.methodSquare.getByClass(oParent,aKeyArr[0]); 
+            return ;
+
+        }        
         //3 use the vQuery.methodSquare.getByClass get the primary arr 
         var aPrimary=null;
         if(oParent!=document)
@@ -437,34 +469,55 @@ vQuery.mainSelector=(function(){
            while(x--)
            {
                 aPrimary=vQuery.methodSquare.getByClass(oParent[x],aKeyArr[0]);
-                result=selectElements(aPrimary,aKeyArr,result,0);              
+                /*focus*/
+                result=severalClassSelect(aPrimary,aKeyArr,result);              
             }           
         }
         else
         {
 
-            aPrimary=vQuery.methodSquare.getByClass(oParent,aKeyArr[0]);   
+            aPrimary=vQuery.methodSquare.getByClass(oParent,aKeyArr[0]); 
+
+            /*focus*/
           
-            result=selectElements(aPrimary,aKeyArr,result,0); 
+            result=severalClassSelect(aPrimary,aKeyArr,result); 
         }
     }
-    function firstExtra(vArg,oParent,result)
-    {
-        var sAttrPattern=/[\[].+]/;
-        if(!Boolean(sAttr=vArg.match(sAttrPattern))){
-            //1 attribute selector 
-           
-            tagClass(vArg,oParent,result);                   
-        }  
-        else{                  
-            selectAttr(sAttr,vArg,oParent,result);
-           
-        }  
+    function severalClassSelect(aPrimary,aKeyArr,result)
+    { 
+        
+        
+        var k=0;
+        var len1=aKeyArr.length;
+        var i=0;
+        var j;
+        
+        var len2=aPrimary.length;
+
+        for(;k<len1;k++)
+        {           
+            aKeyArr[k]=new RegExp(' ' + aKeyArr[k] + ' ', 'i');
+        }
+        for(;i<len2;i++)
+        {      
+            aPrimary[i].verify=true;   
+            j=0;     
+            for(;j<len1;j++)
+            {
+
+                (!(aKeyArr[j].test(' ' + aPrimary[i].className + ' ')))&&(aPrimary[i].verify=false);
+     
+                
+            }   
+              
+        }
+        while(len2--)
+        {    
+           (aPrimary[len2].verify==true)&&addElement(aPrimary[len2],result);
+        }
+        return result;
+             
     }
-    //main selector part1 over
-    //main selector part2
-    //firstSelector function  won't consider the descendant selector but solve the 
-    //tag,class,id,attribute module 
    
     function firstSelector(vArg,oParent0)
     {  
@@ -483,9 +536,20 @@ vQuery.mainSelector=(function(){
         }        
         return result;
     }
-    //main selector part2 over
-    //main selector part3 final version 
-    //this module's purpose is to work the descendant out 
+    function firstExtra(vArg,oParent,result)
+    {
+        var sAttrPattern=/[\[].+]/;
+        if(!Boolean(sAttr=vArg.match(sAttrPattern))){
+            //1 attribute selector 
+           
+            tagClass(vArg,oParent,result);                   
+        }  
+        else{                  
+            selectAttr(sAttr,vArg,oParent,result);
+           
+        }  
+    }
+      
     function finalSelector(sSelector,oParent)
     {
        return (function(){
