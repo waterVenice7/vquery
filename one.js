@@ -46,7 +46,7 @@ vQuery.methodSquare=(function(){
             {
                 obj.addEventListener(event,function(ev)
                 {
-                    // console.log(fn);
+                    // .log(fn);
                     ev=ev||window.event;  
                     cancle&&ev.stopPropagation();               
                     (fn.call(obj)==false)&&ev.preventDefault();
@@ -107,7 +107,9 @@ vQuery.methodSquare=(function(){
     
     function getByClass(oParent,sClass)
     {
+       
         var result=[],
+
            aEle=oParent.getElementsByTagName('*'),
            sClass1=new RegExp(' ' + sClass + ' ', 'i'),
            len=aEle.length;
@@ -263,7 +265,7 @@ vQuery.methodSquare=(function(){
         }
     }
 })();
-
+/* mainSelector*/
 vQuery.mainSelector=(function(){
     
     //vQuery.mainSelector
@@ -273,7 +275,7 @@ vQuery.mainSelector=(function(){
 
        },
         'firstSelector':function(sMixinSelector,parentNode){
-            return  firstSelector(sMixinSelector,parentNode);
+            return  firstselector.process(sMixinSelector,parentNode);
         }
     };
     /*初始化*/
@@ -293,263 +295,7 @@ vQuery.mainSelector=(function(){
             }
         }
     })();
-    /*  用于处理后代选择器分割后的情况，对字符串进行二级判断*/
-     var hashSelector={
-        '#':function(oParent,vArg,result)
-            {
-                    var aEle=oParent.getElementById(vArg.substring(1));
-                    result.push(aEle);
-            },
-        ".":function(vArg,oParent,result)
-            {
-                    severalClass(vArg,oParent,result);
-            }
-
-
-    };
-   
-   
-    
-    function selectAttrPart(oParent,aPri,aAttr,result,sQuote)
-    {
-
-        var aOriEle=oParent.getElementsByTagName(aPri[0]);   
-        var len=aOriEle.length;    
-        aAttr[0]=aAttr[0].replace(sQuote,'');                          
-        if(aAttr.length==1)
-        {
-                   
-            while(len--)
-            {
-                (aOriEle[len].getAttribute(aAttr[0])!=null)&&result.push(aOriEle[len]);   
-            }
-        }
-        else  if(aAttr.length>1){       
-            aAttr[1]=aAttr[1].replace(sQuote,'');
-            while(len--)
-            {
-                ((aOriEle[len].getAttribute(aAttr[0])!=null)&&
-                    (aOriEle[len].getAttribute(aAttr[0]))==aAttr[1]
-                    )&&result.push(aOriEle[len]);         
-            }               
-        }
-    }
-    function selectAttr(sAttr,vArg,oParent,result)
-    {
-        sAttr[0]=sAttr[0].replace('[','');
-        sAttr[0]=sAttr[0].replace(']','');
-        var aAttr=sAttr[0].split('='),
-                    aPri=vArg.split('['),
-                    i=0
-                    sQuote=/'|"+/g;
-        if(oParent instanceof Array)
-        {
-            i=oParent.length;
-            while(i--)
-            {
-                selectAttrPart(oParent[i],aPri,aAttr,result,sQuote); 
-            }       
-        }
-        else
-        {
-            selectAttrPart(oParent,aPri,aAttr,result,sQuote);
-        }
-        
-        
-    }
-     function addElement(aPrimary,result)
-    {
-        result.push(aPrimary);
-        aPrimary.removeAttribute('verify');
-    }
-    function tagClass(vArg,oParent,result)
-    {
-
-        //2  key words
-        var aKeyArr=vArg.split('.'); 
-        //3 use the vQuery.methodSquare.getByClass get the primary arr
-        if(oParent!=document)
-        {
-
-            var y=oParent.length,
-                i=0,
-                aPrimary=null;
-
-            while(i<y)
-            {
-                /*focus*/
-               result=tagClassSelect(aKeyArr,oParent,result);
-              
-               i++;    
-            }
-        }
-        else
-        {
-            /*focus*/
-            result=tagClassSelect(aKeyArr,oParent,result);
-            
-        }
-      
-    }
-    function tagClassSelect(aKeyArr,oParent,result)
-    {
-        /*k len*/
-        var aPrimary=vQuery.methodSquare.getByClass(oParent,aKeyArr[1]);
-        for(var k=1,len=aKeyArr.length;k<len;k++)
-        {           
-            aKeyArr[k]=new RegExp(' ' + aKeyArr[k] + ' ', 'i');
-        }
-        /* len2 l m*/
-        var len2=aPrimary.length;
-        var l=0;
-         
-        if(aKeyArr.length!=2)
-        {
-            var m;
-            for(;l<len2;l++)
-            {
-                aPrimary[l].verify=true; 
-                m=2;
-                for(;m<len;m++)
-                {
-                     
-                     (!(aKeyArr[m].test(' ' + aPrimary[l].className + ' ')))&&(aPrimary[l].verify=false);
-
-                }
-                if(aPrimary[l].nodeName.toLowerCase()!=aKeyArr[0])
-                {
-                    aPrimary[l].verify=false;
-                }
-                (aPrimary[l].verify==true)&&addElement(aPrimary[l],result);
-               
-            }
-            
-
-        }
-        else
-        {
-     
-            //  nodeType 遍历即可
-            
-            for(;l<len2;l++)
-            {
-                aPrimary[l].verify=true; 
-                if(aPrimary[l].nodeName.toLowerCase()!=aKeyArr[0])
-                {
-                    aPrimary[l].verify=false;
-                }
-                (aPrimary[l].verify==true)&&addElement(aPrimary[l],result);
-               
-            }
-        }
-
-        return result;
-    }
-    function severalClass(vArg,oParent,result)
-    {
-        //1 slice 
-          
-        var aEle2=vArg.substring(1);
-
-        //2  key words
-        var aKeyArr=aEle2.split('.');
-        /*one  class return */  
-        if(aKeyArr.length==1)
-        {
-            result=vQuery.methodSquare.getByClass(oParent,aKeyArr[0]); 
-            return ;
-
-        }        
-        //3 use the vQuery.methodSquare.getByClass get the primary arr 
-        var aPrimary=null;
-        if(oParent!=document)
-        {
-
-           var x=oParent.length;           
-           while(x--)
-           {
-                aPrimary=vQuery.methodSquare.getByClass(oParent[x],aKeyArr[0]);
-                /*focus*/
-                result=severalClassSelect(aPrimary,aKeyArr,result);              
-            }           
-        }
-        else
-        {
-
-            aPrimary=vQuery.methodSquare.getByClass(oParent,aKeyArr[0]); 
-
-            /*focus*/
-          
-            result=severalClassSelect(aPrimary,aKeyArr,result); 
-        }
-    }
-    function severalClassSelect(aPrimary,aKeyArr,result)
-    { 
-        
-        
-        var k=0;
-        var len1=aKeyArr.length;
-        var i=0;
-        var j;
-        
-        var len2=aPrimary.length;
-
-        for(;k<len1;k++)
-        {           
-            aKeyArr[k]=new RegExp(' ' + aKeyArr[k] + ' ', 'i');
-        }
-        for(;i<len2;i++)
-        {      
-            aPrimary[i].verify=true;   
-            j=0;     
-            for(;j<len1;j++)
-            {
-
-                (!(aKeyArr[j].test(' ' + aPrimary[i].className + ' ')))&&(aPrimary[i].verify=false);
-     
-                
-            }   
-              
-        }
-        while(len2--)
-        {    
-           (aPrimary[len2].verify==true)&&addElement(aPrimary[len2],result);
-        }
-        return result;
-             
-    }
-   
-    function firstSelector(vArg,oParent0)
-    {  
-        var result=[];
-
-        // if we can't get the oParent paramater we will proceed with the document dom     
-        oParent=oParent0||document;  
-        if(hashSelector.hasOwnProperty(vArg.charAt(0)))
-        {
-            hashSelector[vArg.charAt(0)](vArg,oParent,result);
-        }
-        else
-        {
-          
-            firstExtra(vArg,oParent,result);
-        }        
-        return result;
-    }
-    function firstExtra(vArg,oParent,result)
-    {
-        var sAttrPattern=/[\[].+]/;
-        if(!Boolean(sAttr=vArg.match(sAttrPattern))){
-            //1 attribute selector 
-           
-            tagClass(vArg,oParent,result);                   
-        }  
-        else{                  
-            selectAttr(sAttr,vArg,oParent,result);
-           
-        }  
-    }
-      
+    /*一次选取接口*/  
     function finalSelector(sSelector,oParent)
     {
        return (function(){
@@ -567,11 +313,12 @@ vQuery.mainSelector=(function(){
             {
                 if(i==0)
                 {
-                     aParentNode[i]=firstSelector(aPrimary[i],oParent);
+
+                     aParentNode[i]=firstSelector.process(aPrimary[i],oParent);
                 }
                 else
                 {
-                     var aTem=firstSelector(aPrimary[i],aParentNode[i-1]);  
+                     var aTem=firstSelector.process(aPrimary[i],aParentNode[i-1]);  
                      aParentNode[i]=aTem;
                 }
                 i++;
@@ -579,6 +326,320 @@ vQuery.mainSelector=(function(){
             return aParentNode[aPrimary.length-1];      
         })();      
     }     
+
+    /*二级选取接口*/
+
+    var firstSelector=(function(){
+        function process(vArg,oParent0)
+        {  
+            var result=[];
+            // if we can't get the oParent paramater we will proceed with the document dom     
+            oParent=oParent0||document;  
+            if(firstSelectorJudge.hashSelector.hasOwnProperty(vArg.charAt(0)))
+            {
+                firstSelectorJudge.hashSelector[vArg.charAt(0)](vArg,oParent,result);
+            }
+            else
+            {
+              
+                firstSelectorJudge.firstExtra(vArg,oParent,result);
+            }        
+            return result;
+        }
+        var firstSelectorJudge={
+            "hashSelector":{
+                '#':function(oParent,vArg,result)
+                    {
+                            var aEle=oParent.getElementById(vArg.substring(1));
+                            result.push(aEle);
+                    },
+                ".":function(vArg,oParent,result)
+                    {
+                            /*  several class 改进*/
+                          
+                            severalClass.process(vArg,oParent,result);
+                    }
+
+            },
+            "firstExtra":function(vArg,oParent,result){
+                var sAttrPattern=/[\[].+]/;
+                if(!Boolean(sAttr=vArg.match(sAttrPattern))){
+                    //1 attribute selector 
+                    /*tagClass 改进*/
+                    tagClass.process(vArg,oParent,result);                   
+                }  
+                else{    
+                    /* selectAttr 改进*/              
+                    selectAttr.process(sAttr,vArg,oParent,result);
+                   
+                }  
+            }
+
+        };
+        return {
+            'process':process
+        };
+    })();
+    /*三级处理接口*/
+    /*several Class*/
+    var severalClass=(function()
+    {
+
+            function process(vArg,oParent,result)
+            {
+                //1 slice 
+                  
+                var aEle2=vArg.substring(1);
+
+                //2  key words
+                var aKeyArr=aEle2.split('.');
+                /*one  class return */  
+                if(aKeyArr.length==1)
+                {
+                    result=vQuery.methodSquare.getByClass(oParent,aKeyArr[0]); 
+                    return ;
+
+                }        
+                //3 use the vQuery.methodSquare.getByClass get the primary arr 
+                var aPrimary=null;
+                if(oParent!=document)
+                {
+
+                   var x=oParent.length;           
+                   while(x--)
+                   {
+                        aPrimary=vQuery.methodSquare.getByClass(oParent[x],aKeyArr[0]);
+                        /*focus*/
+                        result=process.select(aPrimary,aKeyArr,result);              
+                    }           
+                }
+                else
+                {
+
+                    aPrimary=vQuery.methodSquare.getByClass(oParent,aKeyArr[0]); 
+
+                    /*focus*/
+                  
+                    result=process.select(aPrimary,aKeyArr,result); 
+                }
+            }
+           process.select=function(aPrimary,aKeyArr0,result)
+            { 
+                
+                
+                var k=0;
+                var len1=aKeyArr0.length;
+                var i=0;
+                var j;
+                
+                var len2=aPrimary.length;
+                var aKeyArr=[].concat(aKeyArr0);
+                for(;k<len1;k++)
+                {           
+                    aKeyArr[k]=new RegExp(' ' + aKeyArr[k] + ' ', 'i');
+                }
+                for(;i<len2;i++)
+                {      
+                    aPrimary[i].verify=true;   
+                    j=0;     
+                    for(;j<len1;j++)
+                    {
+
+                        (!(aKeyArr[j].test(' ' + aPrimary[i].className + ' ')))&&(aPrimary[i].verify=false);
+             
+                        
+                    }   
+                      
+                }
+                while(len2--)
+                {    
+                   (aPrimary[len2].verify==true)&&process.addElement(aPrimary[len2],result);
+                }
+                return result;
+                     
+            }
+            process.addElement=function(aPrimary,result)
+            {
+                result.push(aPrimary);
+                aPrimary.removeAttribute('verify');
+            }
+            return {
+                "process":function(vArg,oParent,result){
+                    process(vArg,oParent,result);
+                }
+            }
+    })();
+    /*tagClass*/
+    var tagClass=(function()
+    {
+            process.addElement=function (aPrimary,result)
+            {
+                result.push(aPrimary);
+                aPrimary.removeAttribute('verify');
+            }
+           
+
+            function process(vArg,oParent,result)
+            {
+
+                //2  key words
+                var aKeyArr=vArg.split('.'); 
+                //3 use the vQuery.methodSquare.getByClass get the primary arr
+                if(oParent!=document)
+                {
+                   
+                    var y=oParent.length,
+                        i=0,
+                        aPrimary=null;
+
+                    while(i<y)
+                    {
+                        /*focus*/
+                        
+
+                       result=process.select(aKeyArr,oParent[i],result);
+                      
+                       i++;    
+                    }
+                }
+                else
+                {
+                    /*focus*/
+                    result=process.select(aKeyArr,oParent,result);
+                    
+                }
+              
+            }
+
+            process.select=function (aKeyArr0,oParent,result)
+            {
+                /*k len*/
+                if(aKeyArr0.length==1)
+                {
+                    // console.log('akeyarr.length==1');
+
+                    result=document.getElementsByTagName(aKeyArr0[0]);
+                    return result;
+                }
+              
+                var aPrimary=vQuery.methodSquare.getByClass(oParent,aKeyArr0[1]);
+               
+                var aKeyArr=[].concat(aKeyArr0);
+                
+                for(var k=1,len=aKeyArr.length;k<len;k++)
+                {           
+                    aKeyArr[k]=" "+aKeyArr[k]+" ";
+                   
+                    /**/
+                }
+                /* len2 l m*/
+                var len2=aPrimary.length;
+                var l=0;
+                 
+                if(aKeyArr.length!=2)
+                {
+                    var m;
+                    for(;l<len2;l++)
+                    {
+                        aPrimary[l].verify=true; 
+                        m=2;
+                        for(;m<len;m++)
+                        {
+                             
+                             (((' ' + aPrimary[l].className + ' ').search(aKeyArr[m])==-1))&&(aPrimary[l].verify=false);
+
+
+                        }
+                        if(aPrimary[l].nodeName.toLowerCase()!=aKeyArr[0])
+                        {
+                            aPrimary[l].verify=false;
+                        }
+                        (aPrimary[l].verify==true)&&this.addElement(aPrimary[l],result);
+                       
+                    }
+                    
+
+                }
+                else
+                {   
+                    //  nodeType 遍历即可
+                    
+                    for(;l<len2;l++)
+                    {
+                        aPrimary[l].verify=true; 
+                        if(aPrimary[l].nodeName.toLowerCase()!=aKeyArr[0])
+                        {
+                            aPrimary[l].verify=false;
+                        }
+                        (aPrimary[l].verify==true)&&this.addElement(aPrimary[l],result);
+                       
+                    }
+                }
+
+                return result;
+            }
+        return {
+            "process":process
+        };
+
+    })();
+    /*attr*/
+    var selectAttr=(function()
+    {
+            process.part=function (oParent,aPri,aAttr,result,sQuote)
+            {
+
+                var aOriEle=oParent.getElementsByTagName(aPri[0]);   
+                var len=aOriEle.length;    
+                aAttr[0]=aAttr[0].replace(sQuote,'');                          
+                if(aAttr.length==1)
+                {
+                           
+                    while(len--)
+                    {
+                        (aOriEle[len].getAttribute(aAttr[0])!=null)&&result.push(aOriEle[len]);   
+                    }
+                }
+                else  if(aAttr.length>1){       
+                    aAttr[1]=aAttr[1].replace(sQuote,'');
+                    while(len--)
+                    {
+                        ((aOriEle[len].getAttribute(aAttr[0])!=null)&&
+                            (aOriEle[len].getAttribute(aAttr[0]))==aAttr[1]
+                            )&&result.push(aOriEle[len]);         
+                    }               
+                }
+            }
+            function process(sAttr,vArg,oParent,result)
+            {
+                sAttr[0]=sAttr[0].replace('[','');
+                sAttr[0]=sAttr[0].replace(']','');
+                var aAttr=sAttr[0].split('='),
+                            aPri=vArg.split('['),
+                            i=0
+                            sQuote=/'|"+/g;
+                if(oParent instanceof Array)
+                {
+                    i=oParent.length;
+
+                    while(i--)
+                    {
+                       
+                        process.part(oParent[i],aPri,aAttr,result,sQuote); 
+                    }       
+                }
+                else
+                {
+                    process.part(oParent,aPri,aAttr,result,sQuote);
+                }
+                
+                
+            }
+            return {
+                "process":process
+            }
+    })();
+
     return a;
 })();
 //LayoutTransform is mainly used for layout is converted to an absolute, 

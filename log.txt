@@ -56,3 +56,22 @@ tagClass severalClass
 	原因：初级数组建立在Class上面
 总结：性能优化暂时停止，有点累了
 缺点仍旧是上面三个
+
+20150601
+<1>
+首先祝福各位儿童节快乐，
+
+今天
+《1》修复了选择器的bug,对,是tagClass,severalClass,
+《2》同时对主体选择器的模块进行了进一步划分，
+《3》再次引入module模式，解决了tagClass,attr,severalClass的耦合问题
+缺点：仍然不能完美满足所有选择情况，但是呢，我不会再次兼容ie低版本了，
+ 	  因为我要学习移动端了，移动端的浪潮将会彻底淹没ie6,7
+ 缺点2:耦合仍旧很强，我发现我的架构能力也不怎么样
+ 优点：选取速度不用说了，tagClass,severalClass已经超越jquery(ie7)
+ 		具体请看
+ 		work/one test/selector/speedTest/tagClass
+ 		work/one test/selector/speedTest/severalClass
+       大概是jquery选取时间的1/4到1/3之间
+ 
+
