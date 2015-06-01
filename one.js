@@ -44,65 +44,44 @@ vQuery.methodSquare=(function(){
             //引入高性能javascript  减少重复性判断
             var myAddEvent=function(obj,event,fn,cancle)
             {
-                obj.addEventListener(event,function(ev)
-                {
-                    // .log(fn);
-                    ev=ev||window.event;  
-                    cancle&&ev.stopPropagation();               
-                    (fn.call(obj)==false)&&ev.preventDefault();
-                },false);
-            }         
+
+                obj.addEventListener(event,fn,false);
+            }  
+
         }
         else
         {   
            var  myAddEvent=function(obj,event,fn,cancle)
            {
-                obj.attachEvent('on'+event,function(ev)
-                {
-                    ev=ev||window.event;
-                    cancle&&(ev.cancelBubble=true);
-                    //ie       
-                    if(fn.call(obj)==false)
-                    {
-                        return false;           
-                    }
-                });  
+                obj.attachEvent('on'+event,fn);  
+               
            }
         }
+         myAddEvent(obj,event,fn,cancle);  
     }
     function myRemoveEvent(obj,event,fn,cancle)
     {
         if(obj.removeEventListener)
         {     
+        	
             //引入高性能javascript  减少重复性判断
             var myRemoveEvent=function(obj,event,fn,cancle)
             {
-                obj.removeEventListener(event,function(ev)
-                {
-                    // console.log(fn);
-                    ev=ev||window.event;  
-                    cancle&&ev.stopPropagation();               
-                    (fn.call(obj)==false)&&ev.preventDefault();
-                },false);
+            	
+            	
+                obj.removeEventListener(event,fn
+                ,false);
             }         
         }
         else
         {   
            var  myRemoveEvent=function(obj,event,fn,cancle)
            {
-                obj.detachEvent('on'+event,function(ev)
-                {
-                    ev=ev||window.event;
-                    cancle&&(ev.cancelBubble=true);
-                    //ie       
-                    if(fn.call(obj)==false)
-                    {
-                        return false;
-                    }
-                                
-                });  
+           		
+                obj.detachEvent('on'+event,fn);  
            }
         }
+         myRemoveEvent(obj,event,fn,cancle); 
     }
     
     function getByClass(oParent,sClass)
@@ -238,11 +217,11 @@ vQuery.methodSquare=(function(){
     }
 
     return {
-        'myAddEvent':function(obj,event,fn){
-            myAddEvent(obj,event,fn);
+        'myAddEvent':function(obj,event,fn,cancle){
+            myAddEvent(obj,event,fn,cancle);
         },
-        'myRemoveEvent':function(obj,event,fn){
-            myRemoveEvent(obj,event,fn);
+        'myRemoveEvent':function(obj,event,fn,cancle){
+            myRemoveEvent(obj,event,fn,cancle);
         },
         'getByClass':function(oParent,sClass){
             return getByClass(oParent,sClass);
@@ -684,6 +663,7 @@ function vQuery(vArg){
     //write (this.length) here isn't a standard method ,
     //but if we don't do in this way
     //we will find the length that equals to zero
+    
 }
 //vquery over
 //$()
@@ -1019,7 +999,7 @@ vQuery.prototype.off=function(event,fn)
 {
     for(var i=0;i<this.elements.length;i++)
     {
-        vQuery.methodSquare.myRemoveEvent(this.elements[i],event,fn);
+    	 vQuery.methodSquare.myRemoveEvent(this.elements[i],event,fn);
     }
 }
 //detachEvent Over
