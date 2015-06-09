@@ -1,17 +1,14 @@
-//Ê×ÏÈ»¹ÊÇÉùÃ÷Ò»ÏÂ£¬Õâ¸ö¿âÊÇÎªÁËÁ·Ï°£¬²»ÊÇÎªÁËÒıÓÃ
-                          ÊÇÎªÁË¼Ü¹¹£¬²»ÊÇÎªÁËÏ¸½Ú£¬
-evaluation:
-ËùÒÔÈç¹ûÓĞ¼Ü¹¹·½ÃæµÄ½¨Òé£¬¿ÉÒÔ¹²Í¬Ñ§Ï°
-Ä£¿é»¯£¬½µµÍñîºÏ£¬ÃüÃû¿Õ¼äµÄ³åÍ»½â¾ö£¬ÊÇÇ°¶ÎÊ±¼äµÄÑ§Ï°ÖØµã£¬ËùÒÔÒ²ÊÇ½â¾öÖØµã
-ĞÔÄÜ·½ÃæÎÒ²»¸ÒËµ£¬µ«ÊÇ¼æÈİĞÔ»¹ÊÇ·Ç³£²»´íµÄ
+ï»¿#part1:
+#å…¼å®¹æ€§æ¥è¯´è¿˜æ˜¯éå¸¸ä¸é”™ï¼Œé€‰å–é€Ÿåº¦åœ¨ie7ä¸‹çš„è¡¨ç°ï¼Œå¯¹äºæ·±åº¦ä¸º500å¤šçš„èŠ‚ç‚¹ï¼Œé€‰å–é€Ÿåº¦æ˜¯jquery(2014-10ç‰ˆæœ¬)çš„2åˆ°3å€
+#log è¡¨è®°å½•äº†æœ€è¿‘ä¸€æ®µæ—¶é—´çš„æˆé•¿ã€‚
 
-ËùÒÔÏÂÒ»¸ö½×¶Î½«»áÒıÓÃÆäËû¿âµÄĞÔÄÜ¾­Ñé£¬ÏàĞÅ¶ÔÓÚ»ù´¡»¹¿ÉÒÔµÄÎÒ£¬»¹ÊÇÍ¦¼òµ¥µÄ¡£
 focus:
-±¾ÈËÄ¿Ç°Ò²Ö»ÊÇÔÚÑ§Ï°½×¶Î£¬»¶Ó­Ö¸½Ì
+æœ¬äººç›®å‰ä¹Ÿåªæ˜¯åœ¨å­¦ä¹ é˜¶æ®µï¼Œæ¬¢è¿æŒ‡æ•™ï¼Œå“¦ï¼Œå¯¹äº†ï¼Œæœ‰å…´è¶£çš„è¯å¯ä»¥çœ‹ä¸€ä¸‹æºç ï¼Œæœ¬äººç›®å‰è¿˜æ²¡æœ‰å€Ÿé‰´jqueryçš„å†™æ³•ï¼Œ
+ä¸»è¦æ¥è¯´æ˜¯ä»ã€Šjavascriptè®¾è®¡æ¨¡å¼ã€‹ï¼Œã€Šç¼–å†™å¯ç»´æŠ¤çš„javascriptã€‹,ã€Šé«˜æ€§èƒ½javasciptã€‹ä¸­è·å¾—çš„å¯ç¤º
 
-focus2:
-Everything will flow,technology is only the beginning
-//1
+
+api:
+#1
 $()
 $('div')
 $('#div1')
@@ -19,94 +16,87 @@ $('.box')
 $('div.box1.box2......');
 $('.pox1.pox2............')
 $('#div1 .pox2.pox3.pox4 .box2.box3.box4');
-$('div[name=¡°jason¡±]');
-//×Ü½áÖ§³Öid,class,tagname,ÒÔ¼°¶à¸öclass,tagnameÓëclass¸´ºÏĞÎÊ½£¬Ö§³Öºó´úÑ¡ÔñÆ÷
-//Ö§³ÖÊôĞÔÑ¡ÔñÆ÷
-//2
+$('div[name=â€œjasonâ€]');
+#æ€»ç»“æ”¯æŒid,class,tagname,ä»¥åŠå¤šä¸ªclass,tagnameä¸classå¤åˆå½¢å¼ï¼Œæ”¯æŒåä»£é€‰æ‹©å™¨
+#æ”¯æŒå±æ€§é€‰æ‹©å™¨
+#2
 click
-same as jquery
 
-//3
+#3
 hover
-same as jquery
 
-//4
+#4
 animate(json,fn)
-
 
 For instance:
 animate({'width':'500px,'opacity':70,'top':'30px'},function(){alert('ok');})
-//×¢Òâtop,leftÔË¶¯µÄÇ°ÌáÊÇ±¾ÉíÓĞpos:rea»òÕßpos:abs
+#æ³¨æ„top,leftè¿åŠ¨çš„å‰ææ˜¯æœ¬èº«æœ‰pos:reaæˆ–è€…pos:abs
 
-//5
+#5
 show
-same as jquery
-//6
+
+#6
 hide
-same as jquery
-//7
+
+#7
 fadeIn
-same as jquery
-//8
+
+#8
 fadeOut
-same as jquery
-//9
+
+#9
 slideUp
-same as jquery
-//10
+
+#10
 slideDown
-same as jquery
-//11
+
+#11
 css
-same as jquery
-//12
+
+#12
 attr
-same as jquery
-//13
+
+#13
 toggle
 For instance:
 $('#div1').toggle(fn1,fn2,fn3);
-//Èı¸öº¯Êı»áÔÚµã»÷divµÄÊ±ºòÒÀ´ÎÖ´ĞĞ
+#ä¸‰ä¸ªå‡½æ•°ä¼šåœ¨ç‚¹å‡»divçš„æ—¶å€™ä¾æ¬¡æ‰§è¡Œ
 
-
-///////////////////////dom½Úµã
-//14
+#14
 eq()
-same as jquery
 
-//15
+#15
 find()
-same as jquery
 
-////////
 16
 index()
-same as jquery
 
-//17
+#17
 bind()
 For instance:
 $('#div1').bind('click',fn);
-//attention: ²»Òª¼ÓhoverÄÇÊÇÎÒ·âµÄ£¬²»ÊÇÏµÍ³×Ô´øµÄ
-//18
+
+#18
 each
-//±éÀúdom½Úµã
-For instance:$('div').each(function(index,value){
+#éå†domèŠ‚ç‚¹
+For instance:
+$('div').each(function(index,value){
 
    $(this).click(function{
      alert(index);
    });
 })
 
-//19
+#19
 $.each()
-//±éÀúÊı×é
-For instance:$.each(arr1,function(index,value){
+#éå†æ•°ç»„
+For instance:
+$.each(arr1,function(index,value){
 
    alert(index);
 });
 
-//20
+#20
 onscroll()
 For instance:
 $('div').onscroll(function(bStop){
@@ -119,76 +109,66 @@ $('div').onscroll(function(bStop){
      console.log('mouse up');
     }
 },fn2,fn3.....);
-//fn2,fn3Ê¹ÓÃĞ§¹û¸úµÚÒ»¸öÏàÍ¬£¬´«ÈëµÄµÚÒ»¸ö²ÎÊı´ú±íÊó±êÏòÏÂ¹ö¶¯
+#fn2,fn3ä½¿ç”¨æ•ˆæœè·Ÿç¬¬ä¸€ä¸ªç›¸åŒï¼Œä¼ å…¥çš„ç¬¬ä¸€ä¸ªå‚æ•°ä»£è¡¨é¼ æ ‡å‘ä¸‹æ»šåŠ¨
 
-//21
+#21
 stop()
 For instance:
 $('#div1').stop();
-//¿ÉÒÔ°ÑÕıÔÚ½øĞĞµÄ¶¯×÷Í£Ö¹
-//22
+#å¯ä»¥æŠŠæ­£åœ¨è¿›è¡Œçš„åŠ¨ä½œåœæ­¢
+
+
+
+/*
+22 åˆ°æœ€åçš„apiä¸æ”¯æŒå¤šä¸ªå…ƒç´ çš„æ“ä½œï¼Œæ”¯æŒå•ä¸ªå…ƒç´ 
+*/
+#22
 $('#div1').text();
-//same as jquery
-//²»Ö§³Ö¶à¸öÔªËØµÄ»ñÈ¡»¹ÓĞĞŞ¸Ä
-//23
+#23
 $('#div1').html();
-//same as jquery
-//²»Ö§³Ö¶à¸öÔªËØµÄ»ñÈ¡»¹ÓĞĞŞ¸Ä
-//24
+#24
 $('#input1').val();
-//same as jquery
-//²»Ö§³Ö¶à¸öÔªËØµÄ»ñÈ¡»¹ÓĞĞŞ¸Ä
-//25
+#25
 $('#div1').append();
-//same as jquery
-//²»Ö§³Ö¶à¸öÔªËØµÄ»ñÈ¡»¹ÓĞĞŞ¸Ä
-//26
+#26
 $('#div1').prepend();
-//same as jquery
-//²»Ö§³Ö¶à¸öÔªËØµÄ»ñÈ¡»¹ÓĞĞŞ¸Ä
-//27
+#27
 $('#div1').remove();
-//same as jquery
-//²»Ö§³Ö¶à¸öÔªËØµÄ»ñÈ¡»¹ÓĞĞŞ¸Ä
-//28
+#28
 $('#div1').empty();
-//same as jquery
-//²»Ö§³Ö¶à¸öÔªËØµÄ»ñÈ¡»¹ÓĞĞŞ¸Ä
-//29
+#29
 $('#div1').width();
-//same as jquery
-//30
+#30
 $('#div1').height();
-//same as jquery
-//31
+#31
 $('#div1').innerHeight();
-//32
+#32
 $('#div1').innerWidth;
-//33
+#33
 $('#div1').outerWidth;
-//34
+#34
 $('#div1').outerHeight();
-//35
+#35
 $('#div1').parent();
-//36
+#36
 $('#div1').parents();
-//37
+#37
 $('#div1').parentsUntil('body');
-//38
+#38
 $('#div1').children('ss');
-//39
+#39
 $.ajax('get','2.php','x=123&y=456',function(result)
 {
     console.log(result);
 });
-//40
+#40
 aboslute
 $('div').absolute;
-¿ÉÒÔ¸ü¸Ä·Ç¾ø¶Ô¶¨Î»Îª¾ø¶Ô¶¨Î»£¬Âú×ãÔË¶¯µÄÏÈÆÚÌõ¼ş£¬
-½ÏÉÙÖØÅÅ
-//41
+å¯ä»¥æ›´æ”¹éç»å¯¹å®šä½ä¸ºç»å¯¹å®šä½ï¼Œæ»¡è¶³è¿åŠ¨çš„å…ˆæœŸæ¡ä»¶ï¼Œ
+è¾ƒå°‘é‡æ’
+#41
 siblings
-same as jquery
+
 
 
 

@@ -1390,8 +1390,10 @@ vQuery.prototype.siblings=function(sPattern){
                 })();
 
     }
-    else if(typeof sPattern=='string'){
-       return   (function(){
+    else if(typeof sPattern=='string')
+    {
+       return   (function()
+       			{
                     var oParent=_this.elements[0].parentNode;
                     return $(vQuery.mainSelector.firstSelector(sPattern,[oParent]));
                 })();      
