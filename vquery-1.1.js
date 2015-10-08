@@ -647,14 +647,14 @@ vQuery.hashTable={
         }
         else
         {
-                 
+            //alert(vArg.length);       
             this.elements.push(vArg);
         }
     }
 }
 function vQuery(vArg){
     this.elements=[];   
-    var a=(typeof vArg);
+    var a=(typeof vArg);///yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
     if(vQuery.hashTable.hasOwnProperty(a))
     {
         vQuery.hashTable[a].call(this,vArg);
@@ -992,6 +992,23 @@ vQuery.prototype.bind=function(event,fn)
     {
         vQuery.methodSquare.myAddEvent(this.elements[i],event,fn);
     }
+}
+/*delegate*/
+vQuery.prototype.delegate=function(type,event,fn){
+	var element=this.elements[0];
+	$(element).bind(event,function(ev){
+		var oEvent=ev||event;
+		var target=ev.target||ev.srcElement;
+		var arr=[];
+		if(target.nodeName.toLowerCase()===type)
+		{
+			fn.call(target);
+
+		}
+	});
+	
+
+
 }
 //attachEvent over 
 //detachEvent 
