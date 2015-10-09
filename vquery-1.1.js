@@ -1,38 +1,12 @@
-// prominent joker 
-//This library  focused on addressing compatibility issues  primarily, 
-//so IE6,7,8 haven't  problems
+/*prominent joker 
+This library  focused on addressing compatibility issues  primarily, 
+so there is no problem in ie6.7,8
+*/
 
-//20150330 update log  
-//completed iterations for find,attr updated compatibility operating smoothly
-////20150401 update addClass removeClass method
-//20150402 update log 
-// Added filter in CSS (IE8 and below) setting, but if you want to
-// Gets the filter (IE8 and below), you need to set up a opacity:filter/100 then obtained by opacity
-// Because it is not necessary, forgive me for being lazy
-//20150402 update log 
-//Increases the absolute method, used to facilitate the movement of action
-//20150404  update log 
-//Added drag plug-in, can realize their own drag there unreal drag
-//20150404  update log 
-//Trying to update the position,offset method successfully updated
-//20150502  update log 
-//Update animate JSON filter
-//20150508  update  log
 /*
 All built-in methods use the module pattern , 
 easy to maintain mainSelector module, 
 greatly reduce naming conflicts
-*/
-/*
-
-support    simple attribute selectors
-This is, of course, compatible with IE6,7
-Otherwise I would not have got so tired
-
-*/
-/*
-  support the single element which can get its siblings
-
 */
 vQuery.aSlideDom=[];
 vQuery.aSlideHeight=[];
@@ -198,7 +172,6 @@ vQuery.methodSquare=(function(){
                 if(bStop)
                 {     
                     clearInterval(obj.timer);        
-                    //chain move
                     fn&&fn();
                 }
             }, fre);
@@ -281,11 +254,8 @@ vQuery.mainSelector=(function(){
             var splitPattern=/\s+/g;
             //1 make sure we will get the critical words
             var aPrimary=sSelector.split(splitPattern);
-            //alert(aPrimary instanceof Array);
             //2 the paramater is establised for saving the selected parentNode 
             var aParentNode=[];
-            //we will use the firstSelector function for split,and proceed with the aParentNode to decline the
-            //time
             var len=aPrimary.length;
             var  i=0;
             while(i<len)
@@ -367,7 +337,7 @@ vQuery.mainSelector=(function(){
             function process(vArg,oParent,result)
             {
                 //1 slice 
-                  
+        
                 var aEle2=vArg.substring(1);
 
                 //2  key words
@@ -396,9 +366,6 @@ vQuery.mainSelector=(function(){
                 {
 
                     aPrimary=vQuery.methodSquare.getByClass(oParent,aKeyArr[0]); 
-
-                    /*focus*/
-                  
                     result=process.select(aPrimary,aKeyArr,result); 
                 }
             }
@@ -473,30 +440,23 @@ vQuery.mainSelector=(function(){
 
                     while(i<y)
                     {
-                        /*focus*/
-                        
 
-                       result=process.select(aKeyArr,oParent[i],result);
-                      
+                       result=process.select(aKeyArr,oParent[i],result);                  
                        i++;    
                     }
                 }
                 else
-                {
-                    /*focus*/
+                {         
                     result=process.select(aKeyArr,oParent,result);
                     
                 }
               
             }
-
             process.select=function (aKeyArr0,oParent,result)
             {
-                /*k len*/
+              
                 if(aKeyArr0.length==1)
                 {
-                    // console.log('akeyarr.length==1');
-
                     result=document.getElementsByTagName(aKeyArr0[0]);
                     return result;
                 }
@@ -508,10 +468,7 @@ vQuery.mainSelector=(function(){
                 for(var k=1,len=aKeyArr.length;k<len;k++)
                 {           
                     aKeyArr[k]=" "+aKeyArr[k]+" ";
-                   
-                    /**/
                 }
-                /* len2 l m*/
                 var len2=aPrimary.length;
                 var l=0;
                  
@@ -541,8 +498,7 @@ vQuery.mainSelector=(function(){
                 }
                 else
                 {   
-                    //  nodeType 遍历即可
-                    
+                    //  nodeType 遍历即可                  
                     for(;l<len2;l++)
                     {
                         aPrimary[l].verify=true; 
@@ -621,14 +577,6 @@ vQuery.mainSelector=(function(){
 
     return a;
 })();
-//LayoutTransform is mainly used for layout is converted to an absolute, 
-//for sports action
-
-//layoutTransform  is over
-//vQuery.methodSquare.startMove
-
-//vQuery.methodSquare.startMove  over
-//vquery 
 vQuery.hashTable={
     'string':function(vArg,elements)
     {
@@ -647,32 +595,27 @@ vQuery.hashTable={
         }
         else
         {
-            //alert(vArg.length);       
+                   
             this.elements.push(vArg);
         }
     }
 }
 function vQuery(vArg){
     this.elements=[];   
-    var a=(typeof vArg);///yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+    var a=(typeof vArg);
     if(vQuery.hashTable.hasOwnProperty(a))
     {
         vQuery.hashTable[a].call(this,vArg);
     }
     this.length=this.elements.length;
-    //write (this.length) here isn't a standard method ,
-    //but if we don't do in this way
-    //we will find the length that equals to zero
+   
     
 }
-//vquery over
-//$()
+
 function $(vArg)
 {
     return new vQuery(vArg);
 }
-//$() over
-//click
 vQuery.prototype.click=function(fn)
 {
       for(var i=0;i<this.elements.length;i++)
@@ -681,7 +624,6 @@ vQuery.prototype.click=function(fn)
       }
     return this;
 }
-//mousemove
 vQuery.prototype.mousemove=function(fn)
 {
     for(var i=0;i<this.elements.length;i++)
@@ -690,8 +632,6 @@ vQuery.prototype.mousemove=function(fn)
     }
     return this;
 }
-//click over
-//animate
 vQuery.prototype.animate=function(json,fn)
 {   
     for(var i=0;i<this.elements.length;i++)
@@ -700,8 +640,6 @@ vQuery.prototype.animate=function(json,fn)
     } 
     return this;
 }
-//animate over
-//absolute
 vQuery.prototype.absolute=function()
 {   
 
@@ -715,8 +653,6 @@ vQuery.prototype.absolute=function()
     } 
     return this;
 }
-//absolute over
-//show
 vQuery.prototype.show=function()
 {
       for(var i=0;i<this.elements.length;i++)
@@ -725,8 +661,6 @@ vQuery.prototype.show=function()
     }
     return this;
 }
-//show over
-//hide 
 vQuery.prototype.hide=function()
 {
       for(var i=0;i<this.elements.length;i++)
@@ -735,8 +669,6 @@ vQuery.prototype.hide=function()
       }
     return this;
 }
-//hide over
-//fadeOut
 vQuery.prototype.fadeOut=function()
 {
     for(var i=0;i<this.elements.length;i++)
@@ -749,9 +681,8 @@ vQuery.prototype.fadeOut=function()
     }
     return this;
 }
-//fadeIn
 vQuery.prototype.fadeIn=function()
-{    //20150318 update fadeIn fadeOut add the show hide action 
+{  
     for(var i=0;i<this.elements.length;i++)
     {
         this.elements[i].style.display='block';
@@ -763,8 +694,6 @@ vQuery.prototype.fadeIn=function()
     }
     return this;
 }
-//over
-//slideUp
 vQuery.prototype.slideUp=function()
 {
     var bSLow=arguments[0];  
@@ -780,8 +709,6 @@ vQuery.prototype.slideUp=function()
         this.elements[i].style.diplay='none';
     }
 }
-//over
-//slideDown
 vQuery.prototype.slideDown=function()
 {
     var bSLow=arguments[0];
@@ -803,8 +730,6 @@ vQuery.prototype.slideDown=function()
         vQuery.methodSquare.startMove(this.elements[i],{'height':target},function(){},fre);       
     }
 }
-//over
-//hover 
 vQuery.prototype.hover=function(fn1,fn2)
 {
       for(var i=0;i<this.elements.length;i++)
@@ -818,8 +743,6 @@ vQuery.prototype.hover=function(fn1,fn2)
       }
     return this;
 }
-//hover over
-// css
 vQuery.prototype.css=function(attr,value)
 {
     if(arguments.length==2)
@@ -839,16 +762,12 @@ vQuery.prototype.css=function(attr,value)
     }
     else
     {
-       //If it is a string, the original unchanged, 
-       //if it is object,for to loop through adding
         if(typeof attr=='string')
         {
             var result=[];
             for(var i=0;i<this.elements.length;i++)
             {
                 result.push(vQuery.methodSquare.getStyle(this.elements[i],attr));
-                //Unfortunately we are not allowed to access filter 
-                //(IE8 and below to set opacity and opacity To get the transparency)
             }
             return result;
         }
@@ -856,7 +775,6 @@ vQuery.prototype.css=function(attr,value)
         {      
             for(var i=0;i<this.elements.length;i++)
             {
-                //loop the json
                 var k='';
                 for(k in attr)
                 {      
@@ -876,8 +794,6 @@ vQuery.prototype.css=function(attr,value)
     }
     return this;
 }
-//css over
-//get attribute
 vQuery.prototype.attr=function(attr,value)
 {
     if(arguments.length==2)
@@ -898,13 +814,10 @@ vQuery.prototype.attr=function(attr,value)
     }
     else
     {
-        //get attribute
         var result=[];
-        //Taking into account the multiple properties of the element gets, 
-        //in fact, not necessary
         for(var i=0;i<this.elements.length;i++)
         {
-            //Taking into account the compatibility of the class
+
             if(attr=='class')
             {
                 result.push(this.elements[i]['className']);
@@ -918,9 +831,6 @@ vQuery.prototype.attr=function(attr,value)
     }
     return this;
 }
-//get attribute over 
-//20150401 update addClass removeClass
-//addClass
 vQuery.prototype.addClass=function(sClass)
 {
 
@@ -931,8 +841,6 @@ vQuery.prototype.addClass=function(sClass)
     }
     return this;
 }
-//addClass over
-//removeClass 
 vQuery.prototype.removeClass=function(sClass)
 {
     for(var i=0;i<this.elements.length;i++)
@@ -941,9 +849,6 @@ vQuery.prototype.removeClass=function(sClass)
     }
     return this;
 }
-
-//removeClass over
-//single dom attach several event
 vQuery.prototype.toggle=function()
 {
 
@@ -963,14 +868,10 @@ vQuery.prototype.toggle=function()
     }
     return this;
 }
-//click attach several events over 
-//based by the index ,we will find the element
 vQuery.prototype.eq=function(n)
 {
   return $(this.elements[n]);
 };
-//eq  over 
-// Find consistent  child nodes
 vQuery.prototype.find=function(vArg)
 {
  
@@ -978,14 +879,10 @@ vQuery.prototype.find=function(vArg)
     result.push.apply(result,vQuery.mainSelector.finalSelector(vArg,this.elements));//1
     return $(result);  
 }
-//Finding child nodes is complete
-//Determine the location of a bunch of DOM nodes
 vQuery.prototype.index=function()
 {
     return vQuery.methodSquare.getIndex(this.elements[0]);
 }
-//index  is over 
-//attachEvent
 vQuery.prototype.bind=function(event,fn)
 {
     for(var i=0;i<this.elements.length;i++)
@@ -1006,12 +903,7 @@ vQuery.prototype.delegate=function(type,event,fn){
 
 		}
 	});
-	
-
-
 }
-//attachEvent over 
-//detachEvent 
 vQuery.prototype.off=function(event,fn)
 {
     for(var i=0;i<this.elements.length;i++)
@@ -1019,26 +911,18 @@ vQuery.prototype.off=function(event,fn)
     	 vQuery.methodSquare.myRemoveEvent(this.elements[i],event,fn);
     }
 }
-//detachEvent Over
-//initiate the extend part
-// open Plug-in 
 vQuery.prototype.extend=function(method,fn)
 {
   
      vQuery.prototype[method]=fn;
 };
-//plug-in over
-//loop the dom elements
 vQuery.prototype.each=function(fn)
 {
-    //var result=[];
     for(var i=0;i<this.elements.length;i++)
     {
         fn.call(this.elements[i],i,this.elements[i]);
     }
 }
-
-//traverse the array
 $.each=function(arr,fn)
 {
     for(var i=0;i<arr.length;i++)
@@ -1046,8 +930,6 @@ $.each=function(arr,fn)
         fn(i,arr[i]);
     }
 }
-//traverse the array over 
-//onscroll 
 vQuery.prototype.onscroll=function()
 {
     var _arguments=arguments;
@@ -1064,16 +946,11 @@ vQuery.prototype.onscroll=function()
             {
                 var oEvent=ev||event;
                 aDown[index]=oEvent.wheelDelta?oEvent.wheelDelta<0:oEvent.detail>0;
-                // alert(aDown[index]);
-                //检测添加是否成功
-                //开始主体操作函数（）
                 function main()
                 {
-                  //2015,3,16更新
                    _arguments[index].call(_this[index],aDown[index]);
                 };
                 main();
-                //阻止默认行为
                 if(oEvent.preventDefault)
                 {
                     oEvent.preventDefault();
@@ -1084,9 +961,6 @@ vQuery.prototype.onscroll=function()
         }
     }
 } 
-//return aDown;
-//scroll over 
-//stop the animate 
 vQuery.prototype.stop=function()
 {
     for(var i=0;i<this.elements.length;i++)
@@ -1095,10 +969,8 @@ vQuery.prototype.stop=function()
     }
     return this;
 }
-// get the dom 
 vQuery.prototype.get=function()
 {
-    //1  don't transport the parameter
     if(arguments[0]===undefined){
         var result=[];
         for(var i=0;i<this.elements.length;i++)
@@ -1107,37 +979,26 @@ vQuery.prototype.get=function()
         }
         return result;
     }
-    //2 get the parameter 0 
     else if(arguments[0]==0)
     {
         return this.elements[0];
     }
 }
-/*
-20150330-based modular segmentation, jQuery HTML
-20150331 is expected to support    more than one element
-From here we tacitly support   s only a single element
-*/
-//1 text()  single element
+
 vQuery.prototype.text=function()
 {
     if(arguments.length==0)
     {
-        //get text
         var sText='';
         var aChild=this.elements[0].childNodes;
         for(var j=0;j<aChild.length;j++)
         {
             if(aChild[j].nodeType==3)
             {
-                //textNode
                 sText+=aChild[j].nodeValue;
-
             }
             else  if(aChild[j].nodeType==1)
             {
-
-                //tagNode 
                 sText+=aChild[j].innerHTML;
             }
         }
@@ -1149,22 +1010,17 @@ vQuery.prototype.text=function()
         for(var j=0;j<aChild.length;j++)
         {
             if(aChild[j].nodeType==3)
-            {
-                //textnode 
+            { 
                aChild[j].nodeValue=arguments[0];
-
             }
             else  if(aChild[j].nodeType==1)
             {
-
-                //tagNode 
                 aChild[j].innerHTML=arguments[0];
             }
         }
     } 
     return this;
-}
-//2 html  single element
+};
 vQuery.prototype.html=function()
 {
 
@@ -1179,8 +1035,7 @@ vQuery.prototype.html=function()
         this.elements[0].innerHTML=arguments[0];
    }
    return this;
-}
-//3 val  single element
+};
 vQuery.prototype.val=function()
 {
    if(arguments.length==0)
@@ -1193,22 +1048,19 @@ vQuery.prototype.val=function()
         this.elements[0].value=arguments[0];
    }
    return this;
-}
-//append  single element
+};
 vQuery.prototype.append=function()
 {
    
     this.elements[0].innerHTML+=arguments[0]; 
     return this;
-}
-//prepend  single element
+};
 vQuery.prototype.prepend=function()
 {
    
     this.elements[0].innerHTML=arguments[0]+this.elements[0].innerHTML;
     return this;
 }
-//remove  single element
 vQuery.prototype.remove=function()
 {
    
@@ -1216,16 +1068,13 @@ vQuery.prototype.remove=function()
     oParent.removeChild(this.elements[0]);
     return this;
 }
-
-
-//empty  single element
 vQuery.prototype.empty=function()
 {
    
     this.elements[0].innerHTML='';
     return this;
 }
-//width height  support    single element
+
 vQuery.prototype.width=function()
 {
    
@@ -1237,7 +1086,7 @@ vQuery.prototype.height=function()
     return  parseInt(vQuery.methodSquare.getStyle(this.elements[0],'height'));
 }
 
-//innerWidth innerHeight  support    single element
+
 vQuery.prototype.innerWidth=function()
 {
     var result=parseInt(vQuery.methodSquare.getStyle(this.elements[0],'width'))
@@ -1253,7 +1102,7 @@ vQuery.prototype.innerHeight=function()
     +parseInt(vQuery.methodSquare.getStyle(this.elements[0],'paddingBottom'));
     return  result;
 }
-//   support   single element
+
 vQuery.prototype.outerWidth=function()
 {
     var result=parseInt(vQuery.methodSquare.getStyle(this.elements[0],'width'))
@@ -1263,7 +1112,7 @@ vQuery.prototype.outerWidth=function()
     +parseInt(vQuery.methodSquare.getStyle(this.elements[0],'marginRight'));
     return  result;
 }
-//single element
+
 vQuery.prototype.outerHeight=function()
 {
    
@@ -1274,11 +1123,10 @@ vQuery.prototype.outerHeight=function()
     +parseInt(vQuery.methodSquare.getStyle(this.elements[0],'marginBottom'));
     return  result;
 };
-//vquery position update 20150404
+
 vQuery.prototype.offset=function()
 {
-    //1 Actions do not support multiple elements, 
-    //so for a single element, and only returns the last operation
+   
     var obj=this.elements[0];
     var oPos={'left':0,'top':0};
     while(obj!=null)
@@ -1291,13 +1139,10 @@ vQuery.prototype.offset=function()
     return oPos;
 }
 
-//position update over
 
-//vquery offset update
 vQuery.prototype.position=function()
 {
-     //1 Actions do not support multiple elements, 
-    //so for a single element, and only returns the last operation
+    
     var obj=this.elements[0];
     var oPos={'x':0,'y':0};
     oPos.x+=obj.offsetLeft;
@@ -1305,17 +1150,15 @@ vQuery.prototype.position=function()
     return oPos;
 }
 
-//offset update over
 
 
-//vquery loop 
-//parent  support   single element 
+
 vQuery.prototype.parent=function()
 {
     return $(this.elements[0].parentNode);
   
 };
-//parents  support   single element
+
 vQuery.prototype.parents=function(filter)
 {
     var result=[];
@@ -1340,10 +1183,10 @@ vQuery.prototype.parents=function(filter)
     }
    return $(result);
 };
-//parentsUntil  support   single element
+
 vQuery.prototype.parentsUntil=function(oUntil)
 {
-    //get ParentNode until the oUntil parameter 
+ 
     var result=[];
     var obj=this.elements[0];
 
@@ -1356,7 +1199,7 @@ vQuery.prototype.parentsUntil=function(oUntil)
     result.pop();
     return $(result);
 };
-//children  single element
+
 vQuery.prototype.children=function(sClass)
 {
    //childNodes
@@ -1381,7 +1224,7 @@ vQuery.prototype.children=function(sClass)
 
     }
 };
-//siblings  support the single  element
+
 vQuery.prototype.siblings=function(sPattern){
     var _this=this;
     if(sPattern===undefined)
@@ -1416,13 +1259,14 @@ vQuery.prototype.siblings=function(sPattern){
                 })();      
     }
 }
-// Temporary absence of the sibling, f
-//forgive me, 11 o'clock at night I can't going on 
-//ajax
-$.ajax=function(method, url, data, success)
+
+$.ajax=function(method, url, data)
 {
-   //support   jquery  ajax
+   
    var xhr = null;
+   var dfd=$.defer();
+   var succRes=null;
+   var errorRes=null;
     try {
         xhr = new XMLHttpRequest();
     } catch (e) {
@@ -1445,16 +1289,78 @@ $.ajax=function(method, url, data, success)
         
         if ( xhr.readyState == 4 ) {
             if ( xhr.status == 200 ) {
-                success && success(xhr.responseText);
+            	succRes=xhr.responseText;
+            	dfd.resolve(succRes.responseText);
+                
             } else {
-                alert('出错了,Err：' + xhr.status);
+            	errorRes=xhr.status;
+            	dfd.reject(errorRes);
             }
         }
         
     }
+    return dfd.promise;
 
 };
+$.defer=function()
+{
+	var succStack=[];
+	var errStack=[];
+	var succ=null;
+	var error=null;
+	var m= 
+	{
+		"resolve":function(a)
+		{
+			if(succStack.length!=0)
+			{
+				for(var i=0,len=succStack.length;i<len;i++)
+				{
+					if(i==0)
+					{
+						succ=succStack[0](a);
 
+					}
+					else
+					{
+						succ=succStack[i](succ);
+					}
+
+				}
+			}
+
+		},
+		"reject":function(b){
+			if(errStack.length!=0)
+			{
+				for(var i=0,len=errStack.length;i<len;i++)
+				{
+					if(i==0)
+					{
+						error=errStack[0](b);
+
+					}
+					else
+					{
+						error=errStack[i](error);
+					}
+
+				}
+			}
+		},
+		"promise":
+		{
+			"then":function(c1,c2)
+			{
+				succStack.push(c1);
+				errStack.push(c2);
+
+				return m.promise;
+			}
+		}
+	};
+	return m;
+}
 
 
 

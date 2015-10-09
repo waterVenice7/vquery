@@ -168,6 +168,10 @@ $('div').absolute;
 较少重排
 #41
 siblings
+#42
+promise-defer
+#43
+delegate
 
 
 
