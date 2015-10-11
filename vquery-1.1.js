@@ -177,6 +177,50 @@ vQuery.methodSquare=(function(){
             }, fre);
         }
     }
+    function oHttp(method,url,data,succ,err)
+    {
+       var xhr = null;
+	   var dfd=$.defer();
+	   var succRes=null;
+	   var errorRes=null;
+	    try {
+	        xhr = new XMLHttpRequest();
+	    } catch (e) {
+	        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+	    }
+	    
+	    if (method == 'get' && data) {
+	        url += '?' + data;
+	    }
+	    
+	    xhr.open(method,url,true);
+	    /*true  代表异步*/
+	    if (method == 'get') {
+	        xhr.send();
+	    } else {
+	        xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+	        xhr.send(data);
+	    }
+	    
+	    xhr.onreadystatechange = function() {
+	        
+	        if ( xhr.readyState == 4 ) {
+	            if ( xhr.status == 200 ) {
+	            	succRes=xhr.responseText;
+                   /* console.log(succ);
+                    console.log(succRes);*/
+	            	(typeof succ==="function")&&(succ(succRes))||(dfd.resolve(succRes));
+	                
+	            } else {
+	            	errorRes=xhr.status;
+	            	(typeof err==="function")&&(err(errorRes))||(dfd.reject(errorRes));
+	            	
+	            }
+	        }
+	        
+	    }
+	    return dfd.promise;
+    }
     function absolute(obj)
     {
         var left=obj.offsetLeft,
@@ -214,6 +258,10 @@ vQuery.methodSquare=(function(){
         },
         'absoluteExtra':function(obj){
             absoluteExtra(obj);
+        },
+        "oHttp":function(method,url,data,succ,err)
+        {
+        	return oHttp(method,url,data,succ,err);
         }
     }
 })();
@@ -1260,47 +1308,37 @@ vQuery.prototype.siblings=function(sPattern){
     }
 }
 
-$.ajax=function(method, url, data)
+$.ajax=function(s)
 {
    
-   var xhr = null;
-   var dfd=$.defer();
-   var succRes=null;
-   var errorRes=null;
-    try {
-        xhr = new XMLHttpRequest();
-    } catch (e) {
-        xhr = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-    
-    if (method == 'get' && data) {
-        url += '?' + data;
-    }
-    
-    xhr.open(method,url,true);
-    if (method == 'get') {
-        xhr.send();
-    } else {
-        xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
-        xhr.send(data);
-    }
-    
-    xhr.onreadystatechange = function() {
-        
-        if ( xhr.readyState == 4 ) {
-            if ( xhr.status == 200 ) {
-            	succRes=xhr.responseText;
-            	dfd.resolve(succRes.responseText);
-                
-            } else {
-            	errorRes=xhr.status;
-            	dfd.reject(errorRes);
-            }
-        }
-        
-    }
-    return dfd.promise;
+  var dataType=s.dataType||null;
+  var method=s.method||null;
+  var url=s.url||null;
+  var data=s.data||"";
+  var succ=s.success||null;
+  var err=s.error||null;
+  var jsonp=s.jsonp;
+  /*确定不需要*/
 
+  function a(method,url,data,succ,err)
+  {
+  	// console.log(url);
+  	 return vQuery.methodSquare.oHttp(method,url,data,succ,err);
+  }
+  function b(url,data,succ,err,cb)
+  {
+    console.log("jsonp");
+  	var oScript=document.createElement("script");
+  	var oBody=document.body||document.documentElement;
+  	oScript.src=url+succ;
+    console.log(oScript.src);
+  	oBody.appendChild(oScript);
+    return true;
+
+  }
+  // console.log(dataType);
+  return (dataType!=="jsonp")&&(a(method,url,data,succ,err))||(b(url,data,succ,err));
+ 
 };
 $.defer=function()
 {
