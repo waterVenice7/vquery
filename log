@@ -80,4 +80,7 @@ tagClass severalClass
   update:增加delegate方法
  20151009
  update:增加promise-defer
+ 20151011
+ update:
+ $.ajax()支持jsonp
 
