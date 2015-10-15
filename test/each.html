@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+	<style>
+     div{width:100px;height:100px;background: green;margin-right:20px;float:left;}
+	</style>
+</head>
+<body>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+
+	<script  src='one.js'></script>
+	<script>
+       $('div').each(function(index,elements){
+       	
+          $(this).click(function(){
+          
+              
+              function test(){
+              
+              
+              	function test1()
+              	{
+
+              		alert(index);
+              	}
+              	test1();
+              };
+
+              test();
+
+          });
+
+       });
+  
+//对于循环类的情况，很容易出现痕迹消失的情况，解决办法不用闭包也可以
+//fn(i); 函数参数能够保留操作痕迹，无论fn()内部有多少层函数，最里面的一层总是可以访问到每个值
+
+
+    
+    
+	</script>
+</body>
+</html>

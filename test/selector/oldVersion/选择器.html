@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div  id='div1'>
+		<div  class='box1  box2  box3'>
+			<div  class='pox1 pox2 pox3'>
+				
+			</div>
+		</div>
+		<div class='box1'></div>
+	</div>
+	<div  class='div1'>
+		<div  class='box1  box2  box3 box44'>
+			<div  class='pox1 pox2 pox3'>
+				
+			</div>
+		</div>
+		<div class='box1'></div>
+	</div>
+	<div  class='div1'>
+		<div  class='box1  box2  box3'>
+			<div  class='pox1 pox2 pox3'>
+				
+			</div>
+			<div></div>
+			<div></div>
+		</div>
+		<div class='box1'></div>
+	</div>
+	<script src='one.js'></script>
+	<script>
+	    alert($('.div1   .box2.box3.box1.box44 .pox1.pox2.pox3').elements.length);//1
+        alert($('.div1   .box2.box3.box1 .pox1.pox2.pox3').elements.length);//2
+        alert($('.div1   .box2.box3.box1 div').elements.length);//4
+	</script>
+	
+</body>
+</html>

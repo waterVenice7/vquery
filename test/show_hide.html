@@ -1,0 +1,43 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+
+	<style>
+
+       #div1{width:200px;height: 200px;background: green;}
+        #div2{width:300px;height: 200px;background: #222;}
+	</style>
+    <script  src='one.js'></script>
+	<script>
+      $(function(){
+         $('#btn2').click(function(){
+         	$('#div1').hide();
+         });
+         $('#btn1').click(function(){
+           
+         	$("#div1").show();
+         });
+         $('#div1').hover(function(){
+
+         	
+            $('#div1').css('background','red');
+            alert($("div").css('width'));//200px 300px
+            //css 设置完成
+         },function(){
+         	
+            $("#div1").css('background','green');
+            
+         });
+      });
+	</script>
+</head>
+<body>
+	<input type="button"  id='btn1' value='show'>
+	<input type="button"  id='btn2'  value='hide'>
+	<div id="div1"></div>
+    <div id='div2'></div>
+</body>
+</html>

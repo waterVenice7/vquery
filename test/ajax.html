@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<style>
+*{margin:0px;padding:0px;}
+#ul1{width:980px;height:350px;margin:0 auto;}
+#ul1 li{width:220px;margin-right:20px;float:left;list-style:none;}
+img{width:220px;height:330px;}
+#ul1 li p{width:220px;line-height:20px;font-size:16px;text-align:center;}
+#ul1 li .small{height:230px;}
+</style>
+
+
+</head>
+
+<body>
+
+
+<ul id='ul1'>
+  
+  <li></li>
+  <li></li>
+  <li></li>
+  <Li></Li>
+</ul>
+</body>
+<script src='vquery-1.1.js'></script>
+<script>
+var iPage=1;
+var aLi=document.getElementsByTagName('li');
+var b=true;
+getList();
+function getList()
+{
+   var oSelect={
+   		"method":"get",
+   		"url":"getPics.php",
+   		"data":"cpage"+iPage,
+   		"succ":a,
+   		"err":b
+   };
+   function a(data)
+   {
+   		console.log(data);
+		var data=JSON.parse(data);
+		if(!data.length)
+		{
+		  return ;	
+		}	
+		for(var i=0;i<data.length;i++)
+		{
+		  var _index=shortNumber(aLi);
+		  var oImg=document.createElement('img');
+		 
+		  oImg.src = data[i].preview;
+		  oImg.style.width = '225px';
+		  oImg.style.height =  data[i].height * ( 225 / data[i].width ) + 'px';
+
+		  var oP=document.createElement('p');
+		  oP.innerHTML = data[i].title;
+
+		  var oDiv=document.createElement('div');
+		  oDiv.appendChild(oImg);
+		  oDiv.appendChild(oP);	  
+		  aLi[_index].appendChild(oDiv);			  
+		}
+		b=true;
+	}
+	function b(data){
+		console.log(data);
+
+	}
+    $.ajax(oSelect);	
+}
+/*onscroll 在图片加载完毕之后*/
+window.onscroll=function (){
+  	var _index=shortNumber(aLi);
+	var oMinLi=aLi[_index];
+
+	var scrollTop=document.body.scrollTop||document.documentElement.scrollTop;
+	var clientHeight=document.body.clientHeight||document.documentELement.clientHeight;
+
+	var iWindowY=scrollTop+clientHeight;
+	if(getTop(aLi[_index])+aLi[_index].offsetHeight<iWindowY)
+	{
+		if(b)
+		{
+			b=false;
+			iPage++;
+			getList();	
+		}
+		
+	}
+};
+/*选择最大的值*/
+function shortNumber(arr){
+	var index=0;
+	var iH=arr[index].offsetHeight;
+	for(var i=1;i<arr.length;i++)
+	{
+	   if(iH>arr[i].offsetHeight)
+	   {
+		   index=i;		  
+	   }	
+	}
+	return index;
+	
+}
+/*获取一个元素相对于绝对0点的坐标值*/
+function getTop(obj) {
+	var iTop = 0;
+	while(obj) {
+		iTop += obj.offsetTop;
+		obj = obj.offsetParent;
+	}
+	return iTop;
+}
+</script>
+</html>

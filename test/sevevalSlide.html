@@ -1,0 +1,40 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <style>
+    div{width:200px;height:200px;background:green;margin-right:20px;float:left;}
+    </style>
+
+	<title>Document</title>
+</head>
+
+
+<body>
+	<div  style='height:300px'></div>
+	<div  style='height:400px'></div>
+	<div></div>
+	<div  style='height:500px'></div>
+	<div></div>
+    <input type="button" id='btn1'  value='up'>
+    <input type="button"  id='btn2'  value='down'>
+    <input type="button"  id='btn3'  value='stlp'>
+	<script  src='one.js'></script>
+	<script>
+        $('#btn1').click(function(){
+
+        	$('div').slideUp('slow');
+        });
+         $('#btn2').click(function(){
+
+        	$('div').slideDown('slow');
+        });
+        $('#btn3').click(function(){
+
+        	$('div').stop();
+        });
+       
+	</script>
+</body>
+</html>

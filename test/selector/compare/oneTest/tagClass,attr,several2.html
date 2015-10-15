@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div>
+		<div   class='box1 box3 box2'  id='box'>
+			<div>
+				<div  name='jason'>
+						<div  class='pox1 pox2 pox3 '>
+						111111
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+				</div>
+				<div  name='jason'>
+						<div  class='pox1 pox2 pox3 '>
+						222222
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+				</div>
+			</div>
+		</div>
+		<div   class='box1 box3 box2'  id='box'>
+			<div>
+				<div  name='jason'>
+						<div  class='pox1 pox2 pox3 '>
+						111111
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+				</div>
+				<div  name='jason'>
+						<div  class='pox1 pox2 pox3 '>
+						222222
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div>
+		<div   class='box1 box3 box2'  id='box'>
+			<div>
+				<div  name='jason'>
+						<div  class='pox1 pox2 pox3 '>
+						111111
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+				</div>
+				<div  name='jason'>
+						<div  class='pox1 pox2 pox3 '>
+						222222
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+				</div>
+			</div>
+		</div>
+		<div   class='box1 box3 box2'  id='box'>
+			<div>
+				<div  name='jason'>
+						<div  class='pox1 pox2 pox3 '>
+						111111
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+				</div>
+				<div  name='jason'>
+						<div  class='pox1 pox2 pox3 '>
+						222222
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+						<div  class='pox1 pox2 pox3 '>
+						
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div  name='jason'> </div>
+	<div  name> </div>
+	<div  class='pox1 pox2 pox3 '>
+					
+	</div>
+	<div  class='pox1 pox2 pox3 '>
+	
+	</div>
+	<div  class='pox1 pox2 pox3 '>
+	
+	</div>
+	<div  name='jason'>
+		<div  class='pox1 pox2 pox3 '>
+		
+		</div>
+		<div  class='pox1 pox2 pox3 '>
+		
+		</div>
+		<div  class='pox1 pox2 pox3 '>
+		
+		</div>
+	</div>
+	<script src='oneTest.js'>
+
+	</script>
+	
+	<script>
+		/*
+			tagClass,attr,
+		*/
+		(function(){
+			var a=new Date();
+
+				console.log($('.box1.box2.box3').length);//4
+				console.log($('.box1.box2.box3 div[name="jason"]').length);//8
+				console.log($('.box1.box2.box3 div[name]').length);// //8
+				console.log($('.box1.box2.box3 div[name="jason"]     div.pox1.pox2.pox3').length)// ;//24
+
+			console.log(new Date()-a);
+
+		})();
+	</script>
+	<script>
+		//问题，字符串trim化
+	</script>
+</body>
+</html>

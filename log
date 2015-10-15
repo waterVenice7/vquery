@@ -76,11 +76,25 @@ tagClass severalClass
   20151001
   update:更新名字为vquery，并且将会引入ieDog类sizzle的选择器
 
+
   20151007
   update:增加delegate方法
+
+
  20151009
  update:增加promise-defer
+
+
+
  20151011
  update:
  $.ajax()支持jsonp
 
+
+20151015
+update:
+《1》this.elements.length=>改写
+     this.elements缓存
+     主体选择器采用querySelectorAll,不再支持ie6,7
+《2》提供分支版本vquery-2=>不再支持ie6,7
+      

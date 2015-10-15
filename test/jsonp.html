@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="vquery-1.1.js"></script>
+	<script>
+		/*https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd='+name+'&cb*/
+		try{
+				function aaa(data)
+				{
+					console.log(data);
+				}
+				var name="123";
+				var oSelect={
+					"dataType":"jsonp",
+					"jsonp":"callback",
+					"url":"http://api.douban.com/v2/book/24754123?callback=",
+					
+					"success":"aaa"
+				};
+				$.ajax(oSelect);
+
+		}
+		catch(e)
+		{
+			console.log(e.message);
+
+		}
+
+	</script>
+</body>
+</html>

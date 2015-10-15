@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+	<style>
+    div{width:200px;height:200px;background:green;float:left;margin:20px;position: relative;filter:alpha(opacity:40);opacity:0.4;}
+    /*
+      filter:alpha(opacity:40);
+      ie 9 一下
+    */
+
+	</style>
+</head>
+<body>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<script  src='one.js'></script>
+	
+	<script>
+      $('div').animate({'width':400,'height':400,'opacity':70},function(){
+      alert('ok');
+
+      });
+      // $('div').fadeOut();
+      //有一个bug就是一旦添加eq()之前的操作中就会缺少一个就是eq(2)
+	</script>
+</body>
+</html>

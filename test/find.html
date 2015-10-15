@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+	<style>
+   li{list-style: none;width:200px; height:100px; background:#222;margin-bottom: 19px;}
+	</style>
+</head>
+<body>
+	
+	<ul id='ul1'>
+		
+		<li  class='li1'></li>
+		<li></li>
+		<li  class='li2'></li>
+		<li></li>
+	</ul>
+
+	<script  src='one.js'></script>
+	<script>
+           
+           
+            //$('li').eq(2);
+            //$(document);
+           // alert( $('#ul1').find('.li2').elements[0].className);
+           $('#ul1').find('li').click(function(){alert(2)});
+	</script>
+</body>
+</html>
