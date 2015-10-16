@@ -12,19 +12,14 @@
 		<span>2</span>
 		<span>3</span>
 		<span  name='jason'>4</span>
-		<span  class='2345'>5</span>
+		<span  class='sss'>5</span>
 	</div>
-	<script>
-		var oSpan1=document.getElementById('span1');
-		alert(oSpan1.previousSibling.nodeValue);
-		alert(oSpan1.nextSibling.nodeValue);
 
-	</script>
 	<script src='one.js'></script>
 	<script>
 		alert($('#span1').siblings().get().length);
-		alert($('#span1').siblings("[name='jason']").get().length);
-		alert($('#span1').siblings('.2345').get().length);
+		alert($('#span1').siblings("[name=jason]").get().length);
+		alert($('#span1').siblings('.sss').get().length);
 
 
 	</script>

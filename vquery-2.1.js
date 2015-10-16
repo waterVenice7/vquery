@@ -207,8 +207,7 @@ vQuery.methodSquare=(function(){
 	        if ( xhr.readyState == 4 ) {
 	            if ( xhr.status == 200 ) {
 	            	succRes=xhr.responseText;
-                   /* console.log(succ);
-                    console.log(succRes);*/
+                   
 	            	(typeof succ==="function")&&(succ(succRes))||(dfd.resolve(succRes));
 	                
 	            } else {
@@ -343,6 +342,7 @@ vQuery.prototype.animate=function(json,fn)
 	var temp=null;
     for(var i=0,len=this.elements.length;i<len;i++)
     { 
+    	temp=this.elements[i];
         vQuery.methodSquare.startMove(temp,json,fn);
     } 
     return this;
@@ -391,12 +391,15 @@ vQuery.prototype.fadeOut=function()
     for(var i=0,len=this.elements.length;i<len;i++)
     {
     	temp=this.elements[i];
-        vQuery.methodSquare.startMove(temp,{'opacity':0},function(){},80);         
+        vQuery.methodSquare.startMove(temp,{'opacity':0},a,200);         
     }
-    for(var i=0,len=this.elements.length;i<len;i++)
+    function a()
     {
-    	temp2=this.elements[i];
-        temp2.style.display='none';
+    	for(var i=0,len=this.elements.length;i<len;i++)
+	    {
+	    	temp2=this.elements[i];
+	        temp2.style.display='none';
+	    }
     }
     return this;
 }
@@ -453,10 +456,11 @@ vQuery.prototype.slideDown=function()
          	temp2=vQuery.aSlideDom[j];   
             if(temp2==temp)
             {
-                target=temp2;
+                target=vQuery.aSlideHeight[j];
+                vQuery.methodSquare.startMove(temp,{'height':target},function(){},fre); 
             }
         }
-        vQuery.methodSquare.startMove(temp,{'height':target},function(){},fre);       
+              
     }
 }
 vQuery.prototype.hover=function(fn1,fn2)
@@ -622,7 +626,14 @@ vQuery.prototype.find=function(vArg)
 {
  
     var result=[];
-    result.push.apply(result,vQuery.mainSelector.finalSelector(vArg,this.elements));
+    var temp=null;
+    for(var i=0,len=this.elements.length;i<len;i++)
+    {
+    	temp=this.elements[i];
+    	result.push.apply(result,vQuery.mainSelector.finalSelector(vArg,this.elements[i]));
+
+    }
+   
     return $(result);  
 }
 vQuery.prototype.index=function()
@@ -1046,33 +1057,33 @@ vQuery.prototype.siblings=function(sPattern){
 $.ajax=function(s)
 {
    
-  var dataType=s.dataType||null;
-  var method=s.method||null;
+  var dataType=s.dataType||"";
+  var method=s.method||"get";
   var url=s.url||null;
   var data=s.data||"";
-  var succ=s.success||null;
-  var err=s.error||null;
+  var success=s.success||null;
+  var error=s.error||null;
   var jsonp=s.jsonp;
   /*确定不需要*/
 
   function a(method,url,data,succ,err)
   {
   	// console.log(url);
-  	 return vQuery.methodSquare.oHttp(method,url,data,succ,err);
+  	 return vQuery.methodSquare.oHttp(method,url,data,success,error);
   }
-  function b(url,data,succ,err,cb)
+  function b(url,data,success,error,cb)
   {
-    console.log("jsonp");
+    // console.log("jsonp");
   	var oScript=document.createElement("script");
   	var oBody=document.body||document.documentElement;
-  	oScript.src=url+succ;
-    console.log(oScript.src);
+  	oScript.src=url+success;
+    // console.log(oScript.src);
   	oBody.appendChild(oScript);
     return true;
 
   }
   // console.log(dataType);
-  return (dataType!=="jsonp")&&(a(method,url,data,succ,err))||(b(url,data,succ,err));
+  return (dataType!=="jsonp")&&(a(method,url,data,success,error))||(b(url,data,success,error));
  
 };
 $.defer=function()
