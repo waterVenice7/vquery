@@ -1,6 +1,7 @@
 
 update log
-20150525
+#20150525
+
 更新属性选择器在ie低版本下的兼容性
 选择器体系进一步降低耦合，增强代码的可读性与可维护性
 缺点：
@@ -10,7 +11,7 @@ update log
 从而导致了无法对dom编程进行进一步的改进
 
 
-20150530
+#20150530
 《1》对if else 进行更改，引入哈弗曼编码的思想，频率高的优先放在前面
 《2》缩写if  else  大量采用三目，&&,||
 《3》大量缓存length 缓存dom集合
@@ -36,7 +37,7 @@ bStop=false  在&&中要加()
 26ms,以往的版本用了40ms，可以说是性能提升了33%，
 
 
-20150531
+#20150531
 《1》
 主要针对getByClass，selectElements进行更新，引入严格模式，对于ie7下的深度590节点的测试，severalClass
 的选取速度已经超越jquery,jquery 用时20 ，one.js 用时9
@@ -45,7 +46,7 @@ bStop=false  在&&中要加()
 缺点2：对于大量引用全局变量的情况，将引入局部变量+dom集合缓存技术（也就是零全局变量模式）
 缺点3：命名冲突仍旧要解决，预计采用零全局变量的模式》module模式》单全局变量模式
 
-20150531 
+#20150531 
 <1>
 tagClass severalClass 
 修复bug
@@ -57,7 +58,7 @@ tagClass severalClass
 总结：性能优化暂时停止，有点累了
 缺点仍旧是上面三个
 
-20150601
+#20150601
 <1>
 首先祝福各位儿童节快乐，
 
@@ -73,20 +74,20 @@ tagClass severalClass
     work/one test/selector/speedTest/tagClass
     work/one test/selector/speedTest/severalClass
        大概是jquery选取时间的1/4到1/3之间
-  20151001
+  #20151001
   update:更新名字为vquery，并且将会引入ieDog类sizzle的选择器
 
 
-  20151007
+  #20151007
   update:增加delegate方法
 
 
- 20151009
+# 20151009
  update:增加promise-defer
 
 
 
- 20151011
+ #20151011
  update:
  $.ajax()支持jsonp
 
