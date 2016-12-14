@@ -74,15 +74,15 @@ tagClass severalClass
     work/one test/selector/speedTest/tagClass
     work/one test/selector/speedTest/severalClass
        大概是jquery选取时间的1/4到1/3之间
-  #20151001
-  update:更新名字为vquery，并且将会引入ieDog类sizzle的选择器
+       
+ #20151001
+ update:更新名字为vquery，并且将会引入ieDog类sizzle的选择器
 
-
-  #20151007
+ #20151007
   update:增加delegate方法
 
 
-# 20151009
+#20151009
  update:增加promise-defer
 
 
@@ -92,7 +92,7 @@ tagClass severalClass
  $.ajax()支持jsonp
 
 
-20151015
+#20151015
 update:
 《1》this.elements.length=>改写
      this.elements缓存
