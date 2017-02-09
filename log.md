@@ -20,7 +20,7 @@
 * 引入hashTable  解决switch  大范围判断问题（其实此时并没有大范围判断，不过不会减慢速度，也算为以后的应用打下基础，嘿嘿）
 *  addEventListener 采用了高性能javascript的延迟加载技术，也就是一次重写，到处运行，
   此后将不再需要判断。 当然，也可以采用jquery的做法，脚本预加载
-### question
+###question
 * 问题1：
 更改的过程中变量命名冲突以及混乱成为非常大的问题，
 必须要想到一个合理的解决办法；
@@ -30,7 +30,7 @@ bStop=false  在&&中要加()
 主体选择器要偷偷运行一次(finalSelector)
 * 问题4：
 有些时候遍历强调顺序
-### result
+###result
 * 成果：
 在ie7测试过程，选取一个深度为509的节点，jquery用了21ms,引入高性能javascript后one.js用了
 26ms,以往的版本用了40ms，可以说是性能提升了33%，
@@ -47,7 +47,7 @@ bStop=false  在&&中要加()
 
 #20150531 
 * 
-tagClass severalClass 
+tagClass severalClass
 修复bug
 测试文件 请查看 test/one test/the most complex selector
 * 优点：tagClass severalClass （没有测试后代）
@@ -62,23 +62,20 @@ tagClass severalClass
 *  修复了选择器的bug,对,是tagClass,severalClass,
 *  同时对主体选择器的模块进行了进一步划分，
 *  再次引入module模式，解决了tagClass,attr,severalClass的耦合问题
-disadvantange:
-* 缺点：仍然不能完美满足所有选择情况，但是呢，我不会再次兼容ie低版本了，
+*  缺点：仍然不能完美满足所有选择情况，但是呢，我不会再次兼容ie低版本了，
     因为我要学习移动端了，移动端的浪潮将会彻底淹没ie6,7
-*缺点2:耦合仍旧很强，我发现我的架构能力也不怎么样
- 
- ####advantange 
-* 优点：选取速度不用说了，tagClass,severalClass已经超越jquery(ie7)
+*  缺点2 耦合仍旧很强，我发现我的架构能力也不怎么样
+* 优点 选取速度不用说了，tagClass,severalClass已经超越jquery(ie7)
     具体请看
     work/one test/selector/speedTest/tagClass
     work/one test/selector/speedTest/severalClass, 大概是jquery选取时间的1/4到1/3之间 
  
 # 20151001
 
-* 更新名字为vquery，并且将会引入ieDog类sizzle的选择器
+*更新名字为vquery，并且将会引入ieDog类sizzle的选择器
 
 # 20151007
-*  增加delegate方法
+*增加delegate方法
 
 
 #20151009
