@@ -1,5 +1,6 @@
-
-##特点
+## what is vquery?
+vquery是一个简易版的类jquery的dom操作库，涵盖了一些比较常见的jquery的api,vquery1.1兼容到ie6,vquery2兼容到ie8
+##Feature
 * vquery-1.1 兼容性来说还是非常不错，选取速度在ie7下的表现，对于深度为500多的节点，选取速度是jquery(2014-10版本)的2到3倍
 * vquery-2  不再兼容ie6,7
 * log 表记录了最近一段时间的成长。
