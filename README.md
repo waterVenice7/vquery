@@ -13,7 +13,8 @@ vquery是一个简易版的类jquery的dom操作库，涵盖了一些比较常�
 
 ## api:
 ### 1
-* <pre><code> $()
+* <pre><code> 
+ $()
  $('div')
  $('#div1')
  $('.box')
