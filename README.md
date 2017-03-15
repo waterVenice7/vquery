@@ -13,7 +13,8 @@ vquery是一个简易版的类jquery的dom操作库，涵盖了一些比较常�
 
 ## api:
 ### 1
-* <pre><code> 
+* 
+<pre><code> 
  $()
  $('div')
  $('#div1')
@@ -21,7 +22,8 @@ vquery是一个简易版的类jquery的dom操作库，涵盖了一些比较常�
  $('div.box1.box2......');
  $('.pox1.pox2............')
  $('#div1 .pox2.pox3.pox4 .box2.box3.box4');
- $('div[name=“jason”]');</code></pre>
+ $('div[name=“jason”]');
+ </code></pre>
 *  总结支持id,class,tagname,以及多个class,tagname与class复合形式，支持后代选择器,支持属性选择器
 
 ### 2
@@ -51,7 +53,9 @@ vquery是一个简易版的类jquery的dom操作库，涵盖了一些比较常�
 * <pre><code>$('#div1')slideUp()</code></pre>
 
 ### 10
-* <pre><code>$('#div1').slideDown()
+* 
+<pre><code>
+$('#div1').slideDown()
 </code></pre>
 
 ### 11
@@ -78,8 +82,9 @@ vquery是一个简易版的类jquery的dom操作库，涵盖了一些比较常�
 ### 17
 * bind()
 * For instance:
-* <pre><code>
-$('#div1').bind('click',fn);
+* 
+<pre><code>
+ $('#div1').bind('click',fn);
  </code></pre>
 
 ### 18
@@ -98,7 +103,9 @@ $('#div1').bind('click',fn);
 * $.each()
 * 遍历数组
 * For instance:
-* <pre><code>$.each(arr1,function(index,value){
+* 
+<pre><code>
+$.each(arr1,function(index,value){
     alert(index);
 });
 </code></pre>
@@ -152,9 +159,10 @@ $('#div1').bind('click',fn);
 * <pre><code>  $('#div1').remove();</code></pre>
 
 ### 28
-* <pre><code> $('#div1').empty();<code></pre>
-
-
+* 
+<pre><code> 
+$('#div1').empty();
+</code></pre>
 ### 29
 * <pre><code> $('#div1').width();</code></pre>
 
@@ -188,14 +196,13 @@ $('#div1').bind('click',fn);
 ### 39
 * ajax
 * for instance:
-* <pre>
-<code>
-$.ajax('get','2.php','x=123&y=456',function(result)
-{
-    console.log(result);
-});
-</code>
-</pre>
+* 
+<pre><code>
+  $.ajax('get','2.php','x=123&y=456',function(result)
+  {
+      console.log(result);
+  });
+</code></pre>
 
 ### 40
 * aboslute
