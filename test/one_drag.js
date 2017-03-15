@@ -1,4 +1,4 @@
-$().extend('drag', function (bSetNew,sClassName,dragStart,dragMove,dragEnd){
+$("extend").extend('drag', function (bSetNew,sClassName,dragStart,dragMove,dragEnd){
 	//20150404  update log 增加了drag方法，可以实现自身拖拽还有虚幻拖拽
 	//bSetNew =true 代表将会创建一个新的div,false将支持原来div的拖拽
 	var i=0;	
@@ -21,6 +21,8 @@ $().extend('drag', function (bSetNew,sClassName,dragStart,dragMove,dragEnd){
 			var oEvent=ev||event;
 			$(originObj).absolute();
 			var disX=oEvent.offsetX;
+
+			
 			var disY=oEvent.offsetY;
 
 			if(bSetNew)

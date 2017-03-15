@@ -1,4 +1,4 @@
-$().extend('elastic', function (json,fn){
+$("extend").extend('elastic', function (json,fn){
     for(var i=0;i<this.elements.length;i++)
     {
         elastic(this.elements[i], json, fn);
@@ -18,7 +18,7 @@ $().extend('elastic', function (json,fn){
             {
                  aTem[i]=json[i];
                  json[i]={};
-                 json[i]['value']=aTem[i];
+                 json[i]['value']=parseInt(aTem[i]);
                  json[i]['validate']=true;
                  json[i]['iSpeed']=0;
             }
@@ -34,7 +34,7 @@ $().extend('elastic', function (json,fn){
         {
             fre=arguments[3];
         } 
-  
+        // var bStopcount=0;
         clearInterval(obj.timer);
         // for stop(prototype)
         if(json==false)
@@ -50,16 +50,19 @@ $().extend('elastic', function (json,fn){
                 json.bStop=true;
                 for(var attr in json)
                 { 
-                   
+                    if(attr=="bStop")
+                    {
+                        break;
+                    }
                     // //1.取当前的值
                     var iCur=0;
                     if(attr=='opacity')
                     {
-                        iCur=parseInt(parseFloat(getStyle(obj,attr)*100));
+                        iCur=parseInt(parseFloat(vQuery.methodSquare.getStyle(obj,attr)*100));
                     }
                     else
                     {
-                        iCur=parseInt(getStyle(obj,attr));    
+                        iCur=parseInt(vQuery.methodSquare.getStyle(obj,attr));    
    
                     }       
                     //2.算速度
@@ -93,6 +96,7 @@ $().extend('elastic', function (json,fn){
                     {
                         if(Math.abs(json[attr]['iSpeed'])>=2||Math.abs(json[attr].value-iCur)>5)
                         {
+                            // console.log(attr);
                             json[attr]['validate']=false;
 
                         }                      
@@ -124,6 +128,7 @@ $().extend('elastic', function (json,fn){
                         {
 
                                obj.style[attr]=json[attr]['value']+'px';  
+                            //    console.log(attr);
                                json[attr]['validate']=true;
                                
                         }
@@ -132,17 +137,26 @@ $().extend('elastic', function (json,fn){
                      }
                 }
                 //对所有运动进行评估
-              
+                //  console.log(bStopcount);
                 for(var index in json)
                 {
+                    if(index=="bStop")
+                    {
+
+                         break;
+                    }
                     if(json[index]['validate']==false)
                     {
+                        // console.log("bStop false");
+                        // console.log(bStopcount++);
                         json.bStop=false;
                     }
 
                 }
-                if(json.bStop)
+                // console.log(json.bStop);
+                if(json.bStop==true)
                 {    
+                    // console.log("clearInterval");
                     clearInterval(obj.timer);        
                     //chain move
                     if(fn)

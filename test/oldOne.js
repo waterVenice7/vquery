@@ -8,113 +8,54 @@ All built-in methods use the module pattern ,
 easy to maintain mainSelector module, 
 greatly reduce naming conflicts
 */
-vQuery.util={
-    try:function(fn)
-    {
-        try{
-           return  fn();
-        }catch(e)
-        {           
-            console.log(e);
-            return false;
-        }
-    },
-    isString:function(str)
-    {
-        return this.try(function(){
-            return typeof str==="string";
-        });
-        
-    },
-    isNumber:function(arg)
-    {
-        return this.try(function(){
-            return typeof arg==="number";
-        });
-        
-    },
-    isArray:function(arg){
-        return this.try(function(){
-            return toString.call(arg)==="[object Array]";
-        });
-        
-    },
-    isHash:function(arg){
-        return this.try(function(){
-            return toString.call(arg)==="[object Object]";
-        });      
-    },
-    isExpReg:function(arg)
-    {
-        return this.try(function(){
-             return toString.call(arg)==="[object RegExp]";
-        });    
-    },
-    isBoolean:function(arg){
-        return this.try(function(){
-            return typeof arg==="boolean";
-        });      
-    },
-    isDate:function(arg){
-        return this.try(function(){
-            return toString.call(arg)==="[object Date]";
-        });        
-    },
-   
-};
 vQuery.aSlideDom=[];
 vQuery.aSlideHeight=[];
 vQuery.methodSquare=(function(){
     function myAddEvent(obj,event,fn,cancle)
     {
-        try{
-            if(obj.addEventListener)
-            {     
-                //减少重复性判断
-                var myAddEvent=function(obj,event,fn,cancle)
-                {
-
-                    obj.addEventListener(event,fn,false);
-                }  
-
-            }
-            else
-            {   
-            var  myAddEvent=function(obj,event,fn,cancle)
+        if(obj.addEventListener)
+        {     
+            //引入高性能javascript  减少重复性判断
+            var myAddEvent=function(obj,event,fn,cancle)
             {
-                    obj.attachEvent('on'+event,fn);  
-                
-            }
-            }
-            myAddEvent(obj,event,fn,cancle);
-        }catch(e){
-            console.log(e);
+
+                obj.addEventListener(event,fn,false);
+            }  
+
         }
+        else
+        {   
+           var  myAddEvent=function(obj,event,fn,cancle)
+           {
+                obj.attachEvent('on'+event,fn);  
+               
+           }
+        }
+         myAddEvent(obj,event,fn,cancle);  
     }
     function myRemoveEvent(obj,event,fn,cancle)
     {
-        try{
-            if(obj.removeEventListener)
-            {            	
-                //减少重复性判断
-                var myRemoveEvent=function(obj,event,fn,cancle)
-                {           	
-                    obj.removeEventListener(event,fn
-                    ,false);
-                }         
-            }
-            else
-            {   
-            var  myRemoveEvent=function(obj,event,fn,cancle)
+        if(obj.removeEventListener)
+        {     
+        	
+            //引入高性能javascript  减少重复性判断
+            var myRemoveEvent=function(obj,event,fn,cancle)
             {
-                    
-                    obj.detachEvent('on'+event,fn);  
-            }
-            }
-            myRemoveEvent(obj,event,fn,cancle); 
-        }catch(e){
-            console.log(e);
+            	
+            	
+                obj.removeEventListener(event,fn
+                ,false);
+            }         
         }
+        else
+        {   
+           var  myRemoveEvent=function(obj,event,fn,cancle)
+           {
+           		
+                obj.detachEvent('on'+event,fn);  
+           }
+        }
+         myRemoveEvent(obj,event,fn,cancle); 
     }
     
     function getByClass(oParent,sClass)
@@ -156,110 +97,92 @@ vQuery.methodSquare=(function(){
     function startMove(obj, json, fn)
     {
       
-        try{
-            if(!vQuery.util.isHash(json))
-            {
-                throw new Error("startMove json error");
-            }
-            // if(obj.timer==null)
-            // {
-            //     throw new Error("startmove timer error");
-            // }
-            // if(typeof fn!=="function")
-            // {
-            //     throw new Error("startmove fn error");
-            // }
-            fre=arguments[3]||30;
-            //Avoid the cumulative timer cause acceleration problems
-            clearInterval(obj.timer);
-            //filter the json  
-            for(var  index in json)
-            {
-                json[index]=parseInt(json[index]);
-
-            }
-            //for stop(prototype)
-            if(json===false)
-            {
-                clearInterval(obj.timer);
-            }
-            else
-            {    
-            //main movement
-                obj.timer=setInterval(function ()
-                {
-                    var bStop=true;
-                    
-                    for(var attr in json)
-                    { 
-                        //1.acquire the current value
-                        var iCur=0;
-                        if(attr!='opacity')
-                        {
-                            iCur=parseInt(vQuery.methodSquare.getStyle(obj,attr));   
-                        
-                        }
-                        else
-                        {
-                            iCur=parseInt(parseFloat(vQuery.methodSquare.getStyle(obj,attr))*100); 
-                        }       
-                        //2.cal the speed
-                
-                        var iSpeed=(json[attr]-iCur)/8;          
-                        iSpeed=iSpeed>0?Math.ceil(iSpeed):Math.floor(iSpeed);                        
-                        //3.observe and confirm  the terminating circumstance 
-                        //for chrome bug we proceed with special procedure
-                        if(attr!='opacity')
-                        {
-                            (iCur!=json[attr])&&(bStop=false);
-                        
-                        }
-                        else
-                        {
-                            if(Math.abs(json[attr]-iCur)>8)
-                            {
-                                bStop=false;    
-                            }
-                        //20150318 update error(opacity)
-                            else
-                            {
-                                
-                                iCur=json[attr];
-                                obj.style.filter='alpha(opacity:'+(iCur+iSpeed)+')';
-                                obj.style.opacity=(iCur+iSpeed)/100;     
-                            }
-                        }
-                        //4 main change 
-                        if(attr!='opacity')
-                        {
-                            obj.style[attr]=iCur+iSpeed+'px';
-                            
-                        }
-                        else
-                        { 
-                            obj.style.filter='alpha(opacity:'+(iCur+iSpeed)+')';
-                            obj.style.opacity=(iCur+iSpeed)/100;  
-                        }
-                    }
-                    if(bStop)
-                    {     
-                        clearInterval(obj.timer);        
-                        fn&&fn();
-                    }
-                }, fre);
-            }
-        }catch(e)
+        fre=arguments[3]||30;
+        //Avoid the cumulative timer cause acceleration problems
+        clearInterval(obj.timer);
+        //filter the json  
+        for(var  index in json)
         {
-            console.log(e);
+            json[index]=parseInt(json[index]);
+
+        }
+        //for stop(prototype)
+        if(json===false)
+        {
+            clearInterval(obj.timer);
+        }
+        else
+        {    
+         //main movement
+            obj.timer=setInterval(function ()
+            {
+                var bStop=true;
+                
+                for(var attr in json)
+                { 
+                    //1.acquire the current value
+                    var iCur=0;
+                    if(attr!='opacity')
+                    {
+                         iCur=parseInt(vQuery.methodSquare.getStyle(obj,attr));   
+                       
+                    }
+                    else
+                    {
+                         iCur=parseInt(parseFloat(vQuery.methodSquare.getStyle(obj,attr))*100); 
+                    }       
+                    //2.cal the speed
+              
+                    var iSpeed=(json[attr]-iCur)/8;          
+                    iSpeed=iSpeed>0?Math.ceil(iSpeed):Math.floor(iSpeed);                        
+                    //3.observe and confirm  the terminating circumstance 
+                    //for chrome bug we proceed with special procedure
+                    if(attr!='opacity')
+                    {
+                        (iCur!=json[attr])&&(bStop=false);
+                      
+                    }
+                    else
+                    {
+                        if(Math.abs(json[attr]-iCur)>8)
+                        {
+                            bStop=false;    
+                        }
+                       //20150318 update error(opacity)
+                        else
+                        {
+                            
+                            iCur=json[attr];
+                            obj.style.filter='alpha(opacity:'+(iCur+iSpeed)+')';
+                            obj.style.opacity=(iCur+iSpeed)/100;     
+                        }
+                    }
+                    //4 main change 
+                    if(attr!='opacity')
+                    {
+                        obj.style[attr]=iCur+iSpeed+'px';
+                           
+                    }
+                    else
+                    { 
+                        obj.style.filter='alpha(opacity:'+(iCur+iSpeed)+')';
+                        obj.style.opacity=(iCur+iSpeed)/100;  
+                    }
+                }
+                if(bStop)
+                {     
+                    clearInterval(obj.timer);        
+                    fn&&fn();
+                }
+            }, fre);
         }
     }
     function oHttp(method,url,data,succ,err)
     {
-      try{
-        var xhr = null;
-        var dfd=$.defer();
-        var succRes=null;
-        var errorRes=null;
+       var xhr = null;
+	   var dfd=$.defer();
+	   var succRes=null;
+	   var errorRes=null;
 	    try {
 	        xhr = new XMLHttpRequest();
 	    } catch (e) {
@@ -296,30 +219,17 @@ vQuery.methodSquare=(function(){
 	        
 	    }
 	    return dfd.promise;
-      }catch(e){
-        console.log(e);
-      }
     }
     function absolute(obj)
     {
-        try{
-            var left=obj.offsetLeft,
+        var left=obj.offsetLeft,
             top=obj.offsetTop;  
-            obj.cssText="left="+left+"px;top="+top+'px;';
-        }catch(e)
-        {
-            console.log(e);
-        }
+        obj.cssText="left="+left+"px;top="+top+'px;';
     }
     function absoluteExtra(obj)
     {
-        try{
-            obj.style.margin='0px';
-            obj.style.position='absolute';  
-        }catch(e)
-        {
-            console.log(e);
-        }
+        obj.style.margin='0px';
+        obj.style.position='absolute';   
     }
 
     return {
@@ -361,15 +271,8 @@ vQuery.mainSelector=(function(){
     /*  外部接口*/
      var a={
        'finalSelector':function(sMixinSelector,parentNode){
-       	   try{
-                var parentNode=parentNode||document;
-       		    return parentNode.querySelectorAll(sMixinSelector);
-            }
-            catch(e)
-            {
-                console.log(e);
-                console.log("finalSelector error,sMixinSelector="+sMixinSelector);
-            }
+       	    var parentNode=parentNode||document;
+       		return parentNode.querySelectorAll(sMixinSelector);
        }
     };
     return a;
@@ -377,15 +280,8 @@ vQuery.mainSelector=(function(){
 vQuery.hashTable={
     'string':function(vArg,elements)
     {
-         if(vArg==="extend")
-         {
-            this.elements=[];
-         }
-         else{
-            vArg=vArg.replace(/^\s+|\s+$/g,'');
-            this.elements=vQuery.mainSelector.finalSelector(vArg,document); 
-         }
-        
+         vArg=vArg.replace(/^\s+|\s+$/g,'');
+         this.elements=vQuery.mainSelector.finalSelector(vArg,document); 
     },
     'function':function(vArg){
         window.onload=vArg;
@@ -405,21 +301,15 @@ vQuery.hashTable={
     }
 }
 function vQuery(vArg){
-   try{
-        this.elements=[];   
-        var a=(typeof vArg);
-        if(vQuery.hashTable.hasOwnProperty(a))
-        {
-            vQuery.hashTable[a].call(this,vArg);
-        }
-        else{
-            throw new Error("vquery参数类型不支持"+a);
-        }
-        this.length=this.elements.length;
-   }catch(e)
-   {
-        console.log(e);
-   }      
+    this.elements=[];   
+    var a=(typeof vArg);
+    if(vQuery.hashTable.hasOwnProperty(a))
+    {
+        vQuery.hashTable[a].call(this,vArg);
+    }
+    this.length=this.elements.length;
+   
+    
 }
 
 function $(vArg)
@@ -918,6 +808,7 @@ vQuery.prototype.html=function()
    }
    else if(arguments[0]!=undefined)
    {
+
         this.elements[0].innerHTML=arguments[0];
    }
    return this;
