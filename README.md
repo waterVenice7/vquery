@@ -1,18 +1,18 @@
 ## what is vquery?
 vquery是一个简易版的类jquery的dom操作库，涵盖了一些比较常见的jquery的api,vquery1.1兼容到ie6,vquery2兼容到ie8
-##Feature
+## Feature
 * vquery-1.1 兼容性来说还是非常不错，选取速度在ie7下的表现，对于深度为500多的节点，选取速度是jquery(2014-10版本)的2到3倍
 * vquery-2  不再兼容ie6,7
 * log 表记录了最近一段时间的成长。
 
-###focus:
+### focus:
 * 本人目前也只是在学习阶段，欢迎指教，哦，对了，有兴趣的话可以看一下源码，本人目前还没有借鉴jquery的写法，
 主要来说是从《javascript设计模式》，《编写可维护的javascript》,《高性能javascipt》中获得的启示
 * 整体的api使用方法和内部更严格的类型检测将会在后续版本继续跟进解决
 
 
 ## api:
-###1
+### 1
 * <pre><code> $()
  $('div')
  $('#div1')
@@ -23,10 +23,10 @@ vquery是一个简易版的类jquery的dom操作库，涵盖了一些比较常�
  $('div[name=“jason”]');</code></pre>
 *  总结支持id,class,tagname,以及多个class,tagname与class复合形式，支持后代选择器,支持属性选择器
 
-###2
+### 2
 * <pre><code>$('#div1').click()</code></pre>
 
-###3
+### 3
 * <pre><code>$('#div1').hover()</code></pre>;
 
 ### 4
